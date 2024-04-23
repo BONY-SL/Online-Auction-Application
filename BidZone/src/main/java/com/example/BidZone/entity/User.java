@@ -16,7 +16,7 @@ public class User {
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "profile_id")
-    private Profile userProfile;
+    private UserProfile userProfile;
 
     @Column(nullable = false, unique = true)
     private String username;

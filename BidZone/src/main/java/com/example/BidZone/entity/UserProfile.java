@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Profile {
+public class UserProfile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;

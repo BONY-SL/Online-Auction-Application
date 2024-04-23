@@ -9,7 +9,7 @@ import lombok.ToString;
 @Setter
 @Entity
 @ToString
-public class Item {
+public class BiddingItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,10 +31,10 @@ public class Item {
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, optional = false)
     private Category category;
 
-    protected Item() {
+    protected BiddingItem() {
     }
 
-    public Item(String name, Category category) {
+    public BiddingItem(String name, Category category) {
         this.name = name;
         this.category = category;
     }

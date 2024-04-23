@@ -31,7 +31,7 @@ public class Auction {
 
     @OneToOne(mappedBy = "auction", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
-    private Item item;
+    private BiddingItem item;
 
     @Column(nullable = false)
     private LocalDateTime closingTime;
