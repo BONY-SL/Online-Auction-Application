@@ -9,6 +9,7 @@ import lombok.ToString;
 @Setter
 @Entity
 @ToString
+@Table(name = "biding_item")
 public class BiddingItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,8 +19,10 @@ public class BiddingItem {
     private String name;
 
 
+    @Column
     private String description;
 
+    @Column
     private double startingPrice;
 
 
