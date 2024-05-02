@@ -3,6 +3,9 @@ package com.example.BidZone.service;
 
 import com.example.BidZone.AppExceptions;
 import com.example.BidZone.dto.CreateUserDTO;
+import com.example.BidZone.dto.LoginUserDTO;
+import com.example.BidZone.dto.UserDTO;
+import com.example.BidZone.dto.UserProfileDTO;
 import com.example.BidZone.entity.User;
 import com.example.BidZone.entity.UserProfile;
 import com.example.BidZone.repostry.UserRepository;
@@ -13,6 +16,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.nio.CharBuffer;
 
 @Service
 @Transactional
@@ -40,6 +45,19 @@ public class UserService {
         user.setUserProfile(userProfile);
         userRepository.save(user);
 
+    }
+
+    public UserDTO login(LoginUserDTO loginUserDTO) {
+        User user = userRepository.findByUsername(loginUserDTO.getUsername())
+                .orElseThrow(() -> new AppExceptions("Unknown user", HttpStatus.NOT_FOUND));
+
+        if (passwordEncoder.matches(CharBuffer.wrap(loginUserDTO.getPassword()), user.getPassword())) {
+            UserDTO userDto = modelMapper.map(user, UserDTO.class);
+            UserProfileDTO userProfileDTO = modelMapper.map(user.getUserProfile(), UserProfileDTO.class);
+            userDto.setProfile(userProfileDTO);
+            return userDto;
+        }
+        throw new AppExceptions("Invalid password", HttpStatus.BAD_REQUEST);
     }
 
 }
