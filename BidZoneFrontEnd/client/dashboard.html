@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auction Page</title>
+    <link rel="stylesheet" href="../styles/dashboardStyle.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <script>
+        function gotoLogin() {
+            if (confirm("Are you sure you want to log out?")) {
+                window.location.href = 'index.html';
+            } else {
+                return false;
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #f7f9fc;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+        }
+
+        .sidenav {
+            position: absolute;
+            top: 60px;
+            left: 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-right: 1px solid #dee2e6;
+            width: 200px;
+            height: calc(100% - 60px);
+        }
+
+        .sidenav a {
+            display: block;
+            padding: 8px 16px;
+            text-decoration: none;
+            color: #343a40;
+        }
+
+        .sidenav a:hover {
+            color: #007bff;
+        }
+
+        .auction-list {
+            margin-left: 220px;
+            padding: 20px;
+        }
+
+        .auction-list .card {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" >Bid Zone</a>
+        <form class="form-inline ml-auto">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search By Keyword" aria-label="Search">
+            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+        </form>
+		<div>
+            <button class="logout" onclick="gotoLogin()">LogOut</button>
+        </div>
+    </nav>
+    <div class="sidenav">
+        <h6>Quick Actions</h6>
+        <a href="createlistning.html">Create Listing</a>
+        <a href="#">My Listings</a>
+        <a href="mybid.html">My Bids</a>
+        <hr>
+        <h6>Account</h6>
+        <a href="profile.html">Manage Profile</a>
+        <a href="#">Messages</a>
+    </div>
+
+    <div class="auction-list">
+        <h2>Featured Auctions</h2>
+        <!-- Search and Filter Form -->
+        <div class="form-row">
+            <div class="col-md-3 mb-2">
+                <select class="form-control">
+                    <option value="">All Categories</option>
+                    <option value="art">Art</option>
+                    <option value="electronics">Electronics</option>
+                    <option value="fashion">Fashion</option>
+                    <option value="collectibles">Collectibles</option>
+                </select>
+            </div>
+            <div class="col-md-3 mb-2">
+                <select class="form-control">
+                    <option value="">Sort by</option>
+                    <option value="price_low_high">Price: Low to High</option>
+                    <option value="price_high_low">Price: High to Low</option>
+                    <option value="ending_soon">Ending Soon</option>
+                </select>
+            </div>
+            <div class="col-md-2 mb-2">
+                <button type="submit" class="btn btn-primary btn-block">Filter</button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 col-lg-4">
+                <div class="card">
+                    <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Auction Item">
+                    <div class="card-body">
+                        <h5 class="card-title">Unique Book for Sale</h5>
+                        <p class="card-text">Selling book, "Throwing A Garden Party".</p>
+                        <p>Starting Price: $10</p>
+                        <p class="text-danger">Closes in 1 month</p>
+                        <a href="bid.html" class="btn btn-primary">Bid Now</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card">
+                    <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Auction Item">
+                    <div class="card-body">
+                        <h5 class="card-title">Selling Copier Paper</h5>
+                        <p class="card-text">Premium quality paper</p>
+                        <p>Starting Price: $1</p>
+                        <p class="text-danger">Closes in 2 days</p>
+                        <a href="#" class="btn btn-primary">Bid Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

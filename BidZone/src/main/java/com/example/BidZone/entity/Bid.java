@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @ToString(exclude = {"auction", "placedBy"})
+@Table(name = "bid")
 public class Bid {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -36,7 +37,7 @@ public class Bid {
     private LocalDateTime placedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "auction_id")
+    @JoinColumn(name = "auction_id",referencedColumnName = "id")
     private Auction auction;
 
     @PrePersist

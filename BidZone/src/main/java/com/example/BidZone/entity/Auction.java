@@ -15,23 +15,24 @@ import java.time.ZoneId;
 @NoArgsConstructor
 @ToString
 @Entity
+@Table(name = "auction")
 public class Auction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private String action_name;
 
     @Column(nullable = false)
     private String description;
 
     @Column
-    private String s3ImageURL;
+    private String Image;
 
     @OneToOne(mappedBy = "auction", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
-    private BiddingItem item;
+    private BiddingItem item_name;
 
     @Column(nullable = false)
     private LocalDateTime closingTime;
@@ -48,7 +49,7 @@ public class Auction {
     private Bid currentHighestBid;
 
     public Auction(String name, String description) {
-        this.name = name;
+        this.action_name = name;
         this.description = description;
     }
 

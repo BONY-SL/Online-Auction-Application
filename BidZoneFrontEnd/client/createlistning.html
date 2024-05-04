@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Listing - YetAnotherAuctionApp</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f7f9fc;
+        }
+
+        .form-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .form-header {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="dashboard.html">Bid Zone</a>
+        <div class="collapse navbar-collapse">
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="form-container">
+            <h3 class="form-header">Create Listing</h3>
+            <form>
+                <div class="form-group">
+                    <label for="auctionTitle">Auction title</label>
+                    <input type="text" class="form-control" id="auctionTitle" placeholder="Selling invisibility">
+                </div>
+                <div class="form-group">
+                    <label for="auctionDescription">Auction description</label>
+                    <textarea class="form-control" id="auctionDescription" rows="3"
+                        placeholder="Selling rare victorian era chair..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="item">Item</label>
+                    <input type="text" class="form-control" id="item" placeholder="Vintage furniture for sale...">
+                </div>
+                <div class="form-group">
+                    <label for="itemSpecifications">Item specifications</label>
+                    <input type="text" class="form-control" id="itemSpecifications"
+                        placeholder="Selling rare victorian era chair...">
+                </div>
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select class="form-control" id="category">
+                        <option>Furniture</option>
+                        <option>Electronics</option>
+                        <option>Books</option>
+                        <option>Clothing</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="auctionClosingDate">Auction closing date</label>
+                    <input type="date" class="form-control" id="auctionClosingDate">
+                </div>
+                <div class="form-group">
+                    <label for="startingPrice">Starting Price</label>
+                    <input type="number" class="form-control" id="startingPrice" placeholder="4.99">
+                </div>
+                <!-- Add file input for image upload -->
+                <div class="form-group">
+                    <label for="itemImage">Image (Adding an image equals more bids!)</label>
+                    <input type="file" class="form-control" id="itemImage" accept="image/*">
+                </div>
+                <button type="submit" class="btn btn-primary">Create Listing</button>
+                <button type="button" class="btn btn-secondary ml-2" onclick="window.location.href='/'">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>
