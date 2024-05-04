@@ -29,11 +29,9 @@ body {
 	height: 100%;
 }
 .signup input[type="text"], .signup input[type="password"] {
-	border: 2px solid #0f5888;
 	border-radius: 5px;
 }
 .signup button {
-	border: 3px solid #000000;
 	border-radius: 5px;
 }
 label{
