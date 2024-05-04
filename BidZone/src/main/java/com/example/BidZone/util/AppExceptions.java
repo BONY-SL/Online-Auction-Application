@@ -1,4 +1,4 @@
-package com.example.BidZone;
+package com.example.BidZone.util;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -11,6 +11,9 @@ public class AppExceptions extends RuntimeException{
     public AppExceptions(String message, HttpStatus status) {
         super(message);
         this.status = status;
+    }
+    public HttpStatus getHttpStatus() {
+        return status;
     }
 
 }

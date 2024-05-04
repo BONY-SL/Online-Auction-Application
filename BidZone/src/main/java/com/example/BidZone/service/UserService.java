@@ -1,7 +1,7 @@
 package com.example.BidZone.service;
 
 
-import com.example.BidZone.AppExceptions;
+import com.example.BidZone.util.AppExceptions;
 import com.example.BidZone.dto.CreateUserDTO;
 import com.example.BidZone.dto.LoginUserDTO;
 import com.example.BidZone.dto.UserDTO;
@@ -12,7 +12,6 @@ import com.example.BidZone.repostry.UserRepository;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,8 +24,10 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
     private ModelMapper modelMapper;
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -59,5 +60,7 @@ public class UserService {
         }
         throw new AppExceptions("Invalid password", HttpStatus.BAD_REQUEST);
     }
+
+
 
 }

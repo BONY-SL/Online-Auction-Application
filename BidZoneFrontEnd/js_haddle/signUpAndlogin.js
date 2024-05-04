@@ -42,8 +42,7 @@ function userSignUp() {
         alert('Failed to register user');
       });
 }
-
-function userLogin() {
+ function userLogin() {
   const form = document.getElementById('loginForm');
   const username = form.username2.value.trim();
   const password = form.password2.value.trim();
@@ -75,8 +74,9 @@ function userLogin() {
         form.reset();
         return response.json();
       })
-      .then(data => {
+      .then( data => {
         console.log('User data:', data);
+        localStorage.setItem('username', data.username);
         form.reset();
         window.location.href = 'dashboard.html';
       })

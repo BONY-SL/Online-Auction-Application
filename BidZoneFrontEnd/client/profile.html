@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile Page - YetAnotherAuctionApp</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="../js_haddle/UserProfile.js"></script>
+    <link rel="stylesheet" href="../styles/profileStyle.css">
     <style>
         body {
             background-color: #f7f9fc;
@@ -30,22 +32,6 @@
         .form-group {
             margin-bottom: 15px;
         }
-
-        .image-upload {
-            width: 200px;
-            height: 300px;
-            border: 2px dashed #ccc;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            cursor: pointer;
-        }
-
-        .image-upload input[type='file'] {
-            display: none;
-        }
-
         .chat-box {
             display: flex;
             border-radius: 5px;
@@ -79,6 +65,7 @@
                     <label>Profile Picture</label>
                     <div class="image-upload">
                         <label for="profilePicture">
+                            <img id="profilePictureDisplay" alt="Profile Picture">
                             <span>Choose a file</span>
                             <input type="file" id="profilePicture">
                         </label>
@@ -89,18 +76,17 @@
                     <form>
                         <div class="form-group">
                             <label for="firstName">First Name</label>
-                            <input type="text" class="form-control" id="firstName" placeholder="Harry">
+                            <input type="text" class="form-control" id="firstName">
                         </div>
                         <div class="form-group">
                             <label for="lastName">Last Name</label>
-                            <input type="text" class="form-control" id="lastName" placeholder="Potter">
+                            <input type="text" class="form-control" id="lastName">
                         </div>
                         <div class="form-group">
                             <label for="description">Description</label>
-                            <textarea class="form-control" id="description" rows="3"
-                                placeholder="I am a Wizard"></textarea>
+                            <textarea class="form-control" id="description" rows="3"></textarea>
                         </div>
-                        <button type="button" class="btn btn-primary">Save</button>
+                        <button type="button" id="saveButton" class="btn btn-primary" onclick="updateUserProfile()">Save</button>
                     </form>
                 </div>
             </div>
