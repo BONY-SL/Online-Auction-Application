@@ -4,8 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Listing - YetAnotherAuctionApp</title>
+    <title>Bid Zone Online Auction</title>
+    <link rel="icon" type="image/png" href="../styles/Screenshot 2024-05-05 105855.png">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="../js_haddle/auctionManage.js"></script>
+    <script src="../js_haddle/manageCategory.js"></script>
+    <link rel="stylesheet" href="../styles/createAuction.css">
     <style>
         body {
             background-color: #f7f9fc;
@@ -35,49 +39,47 @@
     <div class="container mt-5">
         <div class="form-container">
             <h3 class="form-header">Create Listing</h3>
-            <form>
-                <div class="form-group">
-                    <label for="auctionTitle">Auction title</label>
-                    <input type="text" class="form-control" id="auctionTitle" placeholder="Selling invisibility">
-                </div>
-                <div class="form-group">
-                    <label for="auctionDescription">Auction description</label>
-                    <textarea class="form-control" id="auctionDescription" rows="3"
-                        placeholder="Selling rare victorian era chair..."></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="item">Item</label>
-                    <input type="text" class="form-control" id="item" placeholder="Vintage furniture for sale...">
-                </div>
-                <div class="form-group">
-                    <label for="itemSpecifications">Item specifications</label>
-                    <input type="text" class="form-control" id="itemSpecifications"
-                        placeholder="Selling rare victorian era chair...">
-                </div>
-                <div class="form-group">
-                    <label for="category">Category</label>
-                    <select class="form-control" id="category">
-                        <option>Furniture</option>
-                        <option>Electronics</option>
-                        <option>Books</option>
-                        <option>Clothing</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="auctionClosingDate">Auction closing date</label>
-                    <input type="date" class="form-control" id="auctionClosingDate">
-                </div>
-                <div class="form-group">
-                    <label for="startingPrice">Starting Price</label>
-                    <input type="number" class="form-control" id="startingPrice" placeholder="4.99">
-                </div>
-                <!-- Add file input for image upload -->
-                <div class="form-group">
-                    <label for="itemImage">Image (Adding an image equals more bids!)</label>
-                    <input type="file" class="form-control" id="itemImage" accept="image/*">
-                </div>
-                <button type="submit" class="btn btn-primary">Create Listing</button>
-                <button type="button" class="btn btn-secondary ml-2" onclick="window.location.href='/'">Cancel</button>
+            <form id="createAuctionForm">
+                <table class="table-form">
+                    <tr>
+                        <td><label for="name">Auction Title:</label></td>
+                        <td><input type="text" class="form-control" id="name" name="name" placeholder="Selling invisibility"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="description">Auction Description:</label></td>
+                        <td><textarea class="form-control" id="description" rows="3" placeholder="Selling rare victorian era chair..."></textarea></td>
+                    </tr>
+                    <tr>
+                        <td><label for="item">Item Name:</label></td>
+                        <td><input type="text" class="form-control" id="item" placeholder="Vintage furniture for sale..."></td>
+                    </tr>
+                    <tr>
+                        <td><label for="itemSpecifications">Item Description:</label></td>
+                        <td><input type="text" class="form-control" id="itemSpecifications" placeholder="Selling rare victorian era chair..."></td>
+                    </tr>
+                    <tr>
+                        <td><label for="category-select">Category:</label></td>
+                        <td><select id="category-select" class="form-control"></select></td>
+                    </tr>
+                    <tr>
+                        <td><label for="auctionClosingDate">Auction closing date:</label></td>
+                        <td><input type="datetime-local" class="form-control" id="auctionClosingDate"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="startingPrice">Starting Price:</label></td>
+                        <td><input type="number" class="form-control" id="startingPrice" placeholder="Rs."></td>
+                    </tr>
+                    <tr>
+                        <td><label for="Image">Item Image :</label></td>
+                        <td><input type="file" class="form-control" id="Image" accept="image/*"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <button type="button" class="btn btn-primary" onclick="createNewAuction()">Create Listing</button>
+                            <button type="button" class="btn btn-secondary ml-2" onclick="clearFormData()">Cancel</button>
+                        </td>
+                    </tr>
+                </table>
             </form>
         </div>
     </div>

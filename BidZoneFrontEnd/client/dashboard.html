@@ -4,13 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Auction Page</title>
+    <title>Bid Zone Online Auction</title>
+    <link rel="icon" type="image/png" href="../styles/Screenshot 2024-05-05 105855.png">
     <link rel="stylesheet" href="../styles/dashboardStyle.css">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-
+    <script src="../js_haddle/manageCategory.js"></script>
+    <script src="../js_haddle/getAuctions.js"></script>
     <script>
         function gotoLogin() {
             if (confirm("Are you sure you want to log out?")) {
@@ -29,7 +31,6 @@
         .navbar-brand {
             font-weight: bold;
         }
-
         .sidenav {
             position: absolute;
             top: 60px;
@@ -47,6 +48,12 @@
             text-decoration: none;
             color: #343a40;
         }
+        .sidenav p{
+            padding: 8px 16px;
+            text-decoration: none;
+            color: #343a40;
+            border: none;
+        }
 
         .sidenav a:hover {
             color: #007bff;
@@ -59,6 +66,17 @@
 
         .auction-list .card {
             margin-bottom: 20px;
+        }
+        .card {
+            width: 350px;
+            height: 600px;
+            overflow: hidden;
+            margin-bottom: 5px;
+        }
+        .card-img-top {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
         }
     </style>
 </head>
@@ -76,13 +94,24 @@
     </nav>
     <div class="sidenav">
         <h6>Quick Actions</h6>
-        <a href="createlistning.html">Create Listing</a>
-        <a href="#">My Listings</a>
+        <a href="createlistning.html">Create Auction</a>
+        <a href="#">My Auctions</a>
         <a href="mybid.html">My Bids</a>
         <hr>
         <h6>Account</h6>
         <a href="profile.html">Manage Profile</a>
         <a href="#">Messages</a>
+        <p onclick="addNewCategoryvisibleDive()">Add Category</p>
+    </div>
+
+    <div id="popup-overlay" class="popup-overlay"></div>
+    <div id="popup-form" class="popup-form">
+        <h3>Add New Category</h3>
+        <form id="category-form" >
+            <input type="text" id="category" name="category" required placeholder="Enter New Category Name"><br><br>
+            <button type="button" onclick="addNewCategory()" style="background-color: #0d64d2">Add</button>
+            <button type="button" onclick="addNewCategoryvisibleDive()">Cancel</button>
+        </form>
     </div>
 
     <div class="auction-list">
@@ -90,54 +119,17 @@
         <!-- Search and Filter Form -->
         <div class="form-row">
             <div class="col-md-3 mb-2">
-                <select class="form-control">
-                    <option value="">All Categories</option>
-                    <option value="art">Art</option>
-                    <option value="electronics">Electronics</option>
-                    <option value="fashion">Fashion</option>
-                    <option value="collectibles">Collectibles</option>
-                </select>
-            </div>
-            <div class="col-md-3 mb-2">
-                <select class="form-control">
-                    <option value="">Sort by</option>
-                    <option value="price_low_high">Price: Low to High</option>
-                    <option value="price_high_low">Price: High to Low</option>
-                    <option value="ending_soon">Ending Soon</option>
+                <select id="category-select" class="form-control">
+                    <option value="all">All Categories</option>
                 </select>
             </div>
             <div class="col-md-2 mb-2">
                 <button type="submit" class="btn btn-primary btn-block">Filter</button>
             </div>
         </div>
-
-        <div class="row">
-            <div class="col-md-6 col-lg-4">
-                <div class="card">
-                    <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Auction Item">
-                    <div class="card-body">
-                        <h5 class="card-title">Unique Book for Sale</h5>
-                        <p class="card-text">Selling book, "Throwing A Garden Party".</p>
-                        <p>Starting Price: $10</p>
-                        <p class="text-danger">Closes in 1 month</p>
-                        <a href="bid.html" class="btn btn-primary">Bid Now</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-4">
-                <div class="card">
-                    <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Auction Item">
-                    <div class="card-body">
-                        <h5 class="card-title">Selling Copier Paper</h5>
-                        <p class="card-text">Premium quality paper</p>
-                        <p>Starting Price: $1</p>
-                        <p class="text-danger">Closes in 2 days</p>
-                        <a href="#" class="btn btn-primary">Bid Now</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div id="auction-list" class="row"></div>
     </div>
+
 </body>
 
 </html>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="auctionappBidZone@localhost" uuid="be74105e-3689-4f7b-81d3-4d6bc19067ba">
+    <data-source source="LOCAL" name="auctionappBidZone@localhost" uuid="d288c557-fa00-4391-a247-bbe684f4f7e1">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <imported>true</imported>
