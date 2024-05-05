@@ -46,6 +46,7 @@ async function createNewAuction() {
         if (response.ok) {
             const result = await response.json();
             alert(`Auction created successfully with ID: ${result.id}`);
+            this.clearFormData();
         } else {
             const errorText = await response.text();
             alert(`Failed to create auction: ${errorText}`);

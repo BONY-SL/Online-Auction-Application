@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
+import java.util.List;
 
 
 @RestController
@@ -47,6 +48,11 @@ public class AuctionController {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
+    }
+
+    @GetMapping("/getAllauctions")
+    public List<AuctionDTO> getAllAuctions() {
+        return auctionService.getAllAuctions();
     }
 
 }

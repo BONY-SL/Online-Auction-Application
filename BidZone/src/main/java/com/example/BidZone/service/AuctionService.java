@@ -14,7 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class AuctionService {
@@ -61,7 +63,23 @@ public class AuctionService {
     }
 
     private AuctionDTO convertToDto(final Auction auction) {
-        return modelMapper.map(auction, AuctionDTO.class);
+        AuctionDTO auctionDTO = modelMapper.map(auction, AuctionDTO.class);
+
+        if (auction.getName() != null) {
+            ItemDTO itemDTO = modelMapper.map(auction.getName(), ItemDTO.class);
+            auctionDTO.setItem(itemDTO);
+        }
+
+        return auctionDTO;
     }
+
+
+    public List<AuctionDTO> getAllAuctions() {
+        List<Auction> auctions = auctionRepository.findAll();
+        return auctions.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
 }
 
