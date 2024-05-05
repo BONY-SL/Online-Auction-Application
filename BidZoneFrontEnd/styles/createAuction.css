@@ -1,0 +1,21 @@
+.table-form {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-form td {
+    padding: 8px;
+}
+
+.table-form label {
+    display: block;
+}
+
+.form-container {
+    margin: 0 auto;
+    max-width: 600px;
+}
+
+.btn {
+    margin-top: 10px;
+}

@@ -1,6 +1,6 @@
 loadCategories().then(r => null);
 
-function addNewCategoryvisibleDive(){
+async function addNewCategoryvisibleDive(){
     const popupForm = document.getElementById('popup-form');
     const overlay = document.getElementById('popup-overlay');
     const isVisible = popupForm.style.display === 'block';
@@ -15,7 +15,7 @@ async function addNewCategory() {
     const categoryName = form.category.value.trim();
 
     if (!categoryName) {
-        alert("Please Enter Category Name");
+        alert("Please Enter Category.js Name");
         return;
     }
 
@@ -29,9 +29,10 @@ async function addNewCategory() {
         });
 
         if (response.ok) {
-            alert('Category added successfully!');
+            alert('added successfully!');
             await loadCategories();
-            addNewCategoryvisibleDive();
+            await addNewCategoryvisibleDive();
+            window.location.href = 'dashboard.html';
             form.reset();
         } else {
             alert('Failed to add category.');
@@ -48,7 +49,6 @@ async function loadCategories() {
         }
         const categories = await response.json();
         const select = document.getElementById('category-select');
-        select.innerHTML = `<option value="all">All Categories</option>`;
         categories.forEach(category => {
             const option = document.createElement('option');
             option.value = category.id;

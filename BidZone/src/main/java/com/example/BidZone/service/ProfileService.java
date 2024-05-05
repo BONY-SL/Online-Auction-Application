@@ -61,7 +61,11 @@ public class ProfileService {
         return dto;
     }
 
-    private String saveFileToDisk(final MultipartFile image, String userName) throws IOException {
+
+    /*in this method create for the upload to the image to database the database saved image path url the image actualy
+    saved in the local disk connect the database link path
+    */
+    public String saveFileToDisk(final MultipartFile image, String userName) throws IOException {
         String targetDir = "C:\\Users\\Public\\uploads\\images\\" + userName;
         File directory = new File(targetDir);
 
