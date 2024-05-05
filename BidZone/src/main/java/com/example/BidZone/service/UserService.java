@@ -56,11 +56,11 @@ public class UserService {
             UserDTO userDto = modelMapper.map(user, UserDTO.class);
             UserProfileDTO userProfileDTO = modelMapper.map(user.getUserProfile(), UserProfileDTO.class);
             userDto.setProfile(userProfileDTO);
+            System.out.println(userDto);
             return userDto;
         }
         throw new AppExceptions("Invalid password", HttpStatus.BAD_REQUEST);
     }
-
 
 
 }

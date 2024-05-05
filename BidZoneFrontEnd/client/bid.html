@@ -7,6 +7,26 @@
     <title>Bid Zone Online Auction</title>
     <link rel="icon" type="image/png" href="../styles/Screenshot 2024-05-05 105855.png">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="../js_haddle/bidmanage.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function toggleDarkOverlay() {
+            const darkOverlay = document.querySelector('.dark-overlay');
+            const formContainer = document.querySelector('.form-container');
+
+            darkOverlay.style.display = darkOverlay.style.display === 'none' ? 'block' : 'none';
+            formContainer.style.display = formContainer.style.display === 'none' ? 'block' : 'none';
+        }
+    </script>
+
+    <script>
+        function navigateToChat() {
+            window.location.href = "chat.html";
+        }
+    </script>
+
     <style>
         body {
             background-color: #f7f9fc;
@@ -74,6 +94,7 @@
 </nav>
     <div class="container mt-5">
         <div class="row auction-container">
+
             <div class="col-md-8">
                 <h3>Selling copier paper</h3>
                 <p>Selling some premium quality paper</p>
@@ -81,18 +102,14 @@
                 <p>Copier paper - 1 ream</p>
                 <p>One ream of Copier paper: Premium. OUR PRICES</p>
             </div>
+
             <div class="col-md-3 text-center">
                 <img src="https://via.placeholder.com/100" class="rounded-circle" alt="User Image">
                 <h5>dwightschrute</h5>
                 <p>Dwight Schrute</p>
                 <button class="btn btn-primary" onclick="navigateToChat()">Chat with user</button>
-
-    <script>
-        function navigateToChat() {
-            window.location.href = "chat.html";
-        }
-    </script>
             </div>
+
         </div>
 
         <div class="bid-list mt-4">
@@ -150,18 +167,7 @@
         </div>
     </div>
 
-    <script>
-        function toggleDarkOverlay() {
-            var darkOverlay = document.querySelector('.dark-overlay');
-            var formContainer = document.querySelector('.form-container');
 
-            darkOverlay.style.display = darkOverlay.style.display === 'none' ? 'block' : 'none';
-            formContainer.style.display = formContainer.style.display === 'none' ? 'block' : 'none';
-        }
-    </script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 
 </html>

@@ -29,7 +29,7 @@ function displayAuctions(auctions) {
                         <p class="card-text">${auction.description}</p>
                         <p>Starting Price: ${item.startingPrice}</p>
                         <p class="text-danger">Closes on ${new Date(auction.closingTime).toLocaleDateString()}</p>
-                        <a href="bid.html" class="btn btn-primary">Bid Now</a>
+                        <a href="bid.html?id=${auction.id}" class="btn btn-primary">Bid Now</a>
                     </div>
                 </div>
             </div>
@@ -37,5 +37,6 @@ function displayAuctions(auctions) {
         auctionList.insertAdjacentHTML('beforeend', card);
     });
 }
+
 
 document.addEventListener('DOMContentLoaded', fetchAuctions);
