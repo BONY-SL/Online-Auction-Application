@@ -1,12 +1,12 @@
 package com.example.BidZone.controller;
-
-
 import com.example.BidZone.dto.AuctionDTO;
-import com.example.BidZone.entity.Auction;
+import com.example.BidZone.dto.UserDTO;
 import com.example.BidZone.entity.User;
 import com.example.BidZone.repostry.AuctionRepository;
 import com.example.BidZone.repostry.UserRepository;
+import com.example.BidZone.service.AuctionFactory;
 import com.example.BidZone.service.AuctionService;
+import com.example.BidZone.service.UserService;
 import com.example.BidZone.util.AppExceptions;
 import com.example.BidZone.util.AuctionNotFoundException;
 import com.example.BidZone.util.CategoryNotFoundException;
@@ -33,6 +33,9 @@ public class AuctionController {
 
     @Autowired
     AuctionRepository auctionRepository;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/getAuctiondetails")
     public AuctionDTO getAuctiondetails(@RequestParam Long id) throws AuctionNotFoundException {
@@ -65,5 +68,21 @@ public class AuctionController {
     public List<AuctionDTO> getAllAuctions() {
         return auctionService.getAllAuctions();
     }
+
+    @GetMapping("/getUserDetails")
+    public UserDTO getUserDetails(@RequestParam(value = "id", required = false) Long id) {
+        System.out.println(id);
+        return userService.getUserDetailsById(id);
+    }
+
+
+    @Autowired
+    private AuctionFactory auctionFactory;
+
+    @GetMapping("/getAuctionsByCategory")
+    public List<AuctionDTO> getAuctionsByCategory(@RequestParam String category) {
+        return auctionFactory.getAuctionsByCategory(category);
+    }
+
 
 }

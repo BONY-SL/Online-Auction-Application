@@ -65,17 +65,17 @@ public class AuctionService {
     }
 
     private AuctionDTO convertToDto(final Auction auction) {
-        AuctionDTO auctionDTO = modelMapper.map(auction, AuctionDTO.class);
 
+        AuctionDTO auctionDTO = modelMapper.map(auction, AuctionDTO.class);
         if (auction.getName() != null) {
             ItemDTO itemDTO = modelMapper.map(auction.getName(), ItemDTO.class);
+            itemDTO.setAuctionId(auctionDTO.getId());
             auctionDTO.setItem(itemDTO);
         }
         if(auction.getCreatedBy()!=null){
             UserDTO userDTO=modelMapper.map(auction.getCreatedBy(),UserDTO.class);
             auctionDTO.setCreatedById(userDTO.getId());
         }
-
         return auctionDTO;
     }
 

@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.nio.CharBuffer;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -60,6 +61,27 @@ public class UserService {
             return userDto;
         }
         throw new AppExceptions("Invalid password", HttpStatus.BAD_REQUEST);
+    }
+    public UserDTO getUserDetailsById(Long id) {
+        System.out.println(id);
+        Optional<User> userOptional = userRepository.findById(id);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            UserDTO userDTO = new UserDTO();
+            userDTO.setId(user.getId());
+            userDTO.setUsername(user.getUsername());
+            UserProfileDTO profileDTO = new UserProfileDTO();
+            profileDTO.setId(user.getUserProfile().getId());
+            profileDTO.setFirstName(user.getUserProfile().getFirstName());
+            profileDTO.setLastName(user.getUserProfile().getLastName());
+            profileDTO.setDescription(user.getUserProfile().getDescription());
+            profileDTO.setProfilePictureURL(user.getUserProfile().getProfilePictureS3URL());
+            userDTO.setProfile(profileDTO);
+            return userDTO;
+        } else {
+            throw new RuntimeException("User not found");
+        }
     }
 
 

@@ -1,0 +1,49 @@
+.chat-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    padding: 15px;
+    max-width: 400px;
+    z-index: 1000;
+}
+
+.chat-main {
+    padding: 15px;
+    background-color: #f7f9fc;
+    border-radius: 8px;
+    position: relative; /* Adding position relative */
+}
+
+.close-chat-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.chat-messages {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: #ffffff;
+}
+
+.chat-input-group {
+    display: flex;
+}
+
+.chat-input-group input {
+    flex: 1;
+    border-radius: 5px 0 0 5px;
+}
+
+.chat-input-group button {
+    border-radius: 0 5px 5px 0;
+}
