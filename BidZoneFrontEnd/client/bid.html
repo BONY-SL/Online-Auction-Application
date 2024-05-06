@@ -7,6 +7,11 @@
     <title>Bid Zone Online Auction</title>
     <link rel="icon" type="image/png" href="../styles/Screenshot 2024-05-05 105855.png">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="../js_haddle/bidmanage.js"></script>
+    <link rel="stylesheet" href="../styles/bid.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <style>
         body {
             background-color: #f7f9fc;
@@ -63,35 +68,106 @@
             display: flex;
             justify-content: space-between;
         }
+        .auction-container {
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            align-items: center;
+            padding: 15px;
+            border: 1px solid rgba(141, 241, 241, 0.62);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(87, 216, 239, 0.76);
+        }
+
+        .auction-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .auction-info h3 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .auction-info p {
+            margin: 4px 0;
+            font-size: 16px;
+            color: #555;
+        }
+        .auction-image img {
+            width: auto;
+            height: auto;
+            max-height: 450px;
+            max-width: 450px;
+        }
+        .label {
+            font-weight: bold;
+        }
+        .user-image {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        #placeBidModal {
+            display: none;
+
+        }
+
+        #placeBidModal.show {
+            display: block;
+        }
     </style>
 </head>
 
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="dashboard.html">Bid Zone</a>
-    <div class="collapse navbar-collapse">
+    <div class="collapse navbar-collapse"></div>
+    </nav>
+    <div class="chat-container" id="chatContainer" style="display: none;">
+        <div class="chat-main">
+            <button class="btn btn-sm btn-danger close-chat-btn" onclick="hidechat()">Close</button>
+            <h5 align="center">Chat With User</h5>
+            <div class="chat-messages">
+                <p class="text-muted">End of previous chat history</p>
+            </div>
+            <div class="chat-input-group">
+                <input type="text" class="form-control" placeholder="Type a message...">
+                <button class="btn btn-primary ml-2">Send</button>
+            </div>
+        </div>
     </div>
-</nav>
     <div class="container mt-5">
         <div class="row auction-container">
-            <div class="col-md-8">
-                <h3>Selling copier paper</h3>
-                <p>Selling some premium quality paper</p>
-                <img src="https://via.placeholder.com/300x200" alt="Copier Paper" class="img-fluid">
-                <p>Copier paper - 1 ream</p>
-                <p>One ream of Copier paper: Premium. OUR PRICES</p>
-            </div>
-            <div class="col-md-3 text-center">
-                <img src="https://via.placeholder.com/100" class="rounded-circle" alt="User Image">
-                <h5>dwightschrute</h5>
-                <p>Dwight Schrute</p>
-                <button class="btn btn-primary" onclick="navigateToChat()">Chat with user</button>
 
-    <script>
-        function navigateToChat() {
-            window.location.href = "chat.html";
-        }
-    </script>
+            <div class="auction-container">
+                <div class="auction-info">
+                    <h3></h3>
+                    <p class="auction-id"></p>
+                    <p class="created-by"></p>
+                    <p class="description"></p>
+                    <p class="starting-price"></p>
+                    <p class="highest-bid"></p>
+                    <p class="closing-time"></p>
+                    <p class="category"></p>
+                    <p class="item-name"></p>
+                    <p class="item-specific"></p>
+                </div>
+                <div class="auction-image">
+                    <img src="https://via.placeholder.com/300x200" alt="Auction Item" class="img-fluid">
+                </div>
+            </div>
+
+            <div class="col-md-3 text-center">
+                <img src="https://via.placeholder.com/100" class="rounded-circle user-image" alt="User Image">
+                <h5 class="username"></h5>
+                <p class="full-name"></p>
+                <button class="btn btn-primary" onclick="navigateToChat()">Chat with user</button>
             </div>
         </div>
 
@@ -106,62 +182,31 @@
                         <th>Amount</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>jonsnow</td>
-                        <td>17 minutes ago</td>
-                        <td>Test</td>
-                        <td>$99</td>
-                    </tr>
-                    <tr>
-                        <td>jonsnow</td>
-                        <td>28 minutes ago</td>
-                        <td>I want to buy some paper, in Westeros...</td>
-                        <td>$1</td>
-                    </tr>
-                </tbody>
             </table>
-            <button class="btn btn-primary" onclick="toggleDarkOverlay()">Place a bid</button>
+            <button class="btn btn-primary" onclick="showPlaceBidModal()">Place a bid</button>
         </div>
     </div>
-
-    <div class="dark-overlay" onclick="toggleDarkOverlay()"></div>
-
-    <div class="form-container" id="placeBidModal">
+    <div class="form-container fade" id="placeBidModal">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Place Bid</h5>
-                <button type="button" class="close" onclick="toggleDarkOverlay()">&times;</button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="form-group">
-                        <label for="amount">Amount</label>
-                        <input type="number" class="form-control" id="amount" placeholder="99.0">
-                    </div>
-                    <div class="form-group">
-                        <label for="comment">Comment</label>
-                        <input type="text" class="form-control" id="comment" placeholder="I would really like to buy this...">
-                    </div>
-                    <button type="button" class="btn btn-secondary" onclick="toggleDarkOverlay()">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Ok</button>
-                </form>
-            </div>
+        <div class="modal-header">
+            <h5 class="modal-title">Place Bid</h5>
+        </div>
+        <div class="modal-body">
+            <form>
+                <div class="form-group">
+                    <label for="amount">Amount</label>
+                    <input type="number" class="form-control" id="amount" placeholder="99.0">
+                </div>
+                <div class="form-group">
+                    <label for="comment">Comment</label>
+                    <input type="text" class="form-control" id="comment" placeholder="I would really like to buy this...">
+                </div>
+                <button type="button" class="btn btn-secondary" onclick="placedBidhide()">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="placedBid()">Submit Placed</button>
+            </form>
         </div>
     </div>
-
-    <script>
-        function toggleDarkOverlay() {
-            var darkOverlay = document.querySelector('.dark-overlay');
-            var formContainer = document.querySelector('.form-container');
-
-            darkOverlay.style.display = darkOverlay.style.display === 'none' ? 'block' : 'none';
-            formContainer.style.display = formContainer.style.display === 'none' ? 'block' : 'none';
-        }
-    </script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </div>
 </body>
 
 </html>
