@@ -1,5 +1,6 @@
 
 async function createNewAuction() {
+
     const action_name = document.getElementById('name').value.trim();
     const description = document.getElementById('description').value.trim();
     const item = document.getElementById('item').value.trim();

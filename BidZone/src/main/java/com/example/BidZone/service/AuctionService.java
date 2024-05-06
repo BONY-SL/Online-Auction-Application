@@ -3,10 +3,12 @@ package com.example.BidZone.service;
 
 import com.example.BidZone.dto.AuctionDTO;
 import com.example.BidZone.dto.ItemDTO;
+import com.example.BidZone.dto.UserDTO;
 import com.example.BidZone.entity.*;
 import com.example.BidZone.repostry.AuctionRepository;
 import com.example.BidZone.repostry.BiddingItemRepostory;
 import com.example.BidZone.repostry.CategoryRepository;
+import com.example.BidZone.util.AuctionNotFoundException;
 import com.example.BidZone.util.CategoryNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,13 +65,17 @@ public class AuctionService {
     }
 
     private AuctionDTO convertToDto(final Auction auction) {
-        AuctionDTO auctionDTO = modelMapper.map(auction, AuctionDTO.class);
 
+        AuctionDTO auctionDTO = modelMapper.map(auction, AuctionDTO.class);
         if (auction.getName() != null) {
             ItemDTO itemDTO = modelMapper.map(auction.getName(), ItemDTO.class);
+            itemDTO.setAuctionId(auctionDTO.getId());
             auctionDTO.setItem(itemDTO);
         }
-
+        if(auction.getCreatedBy()!=null){
+            UserDTO userDTO=modelMapper.map(auction.getCreatedBy(),UserDTO.class);
+            auctionDTO.setCreatedById(userDTO.getId());
+        }
         return auctionDTO;
     }
 
@@ -79,6 +85,11 @@ public class AuctionService {
         return auctions.stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
+    }
+
+    public AuctionDTO getAuctiondetails(long auctionId) throws AuctionNotFoundException {
+        Optional<Auction> auction = auctionRepository.findById(auctionId);
+        return convertToDto(auction.orElseThrow(AuctionNotFoundException::new));
     }
 
 }
