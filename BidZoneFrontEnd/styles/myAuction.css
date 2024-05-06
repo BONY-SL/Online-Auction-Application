@@ -1,0 +1,40 @@
+.sidenav {
+    position: absolute;
+    top: 60px;
+    left: 0;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-right: 1px solid #dee2e6;
+    width: 200px;
+    height: calc(100% - 60px);
+}
+
+.sidenav a {
+    display: block;
+    padding: 8px 16px;
+    text-decoration: none;
+    color: #343a40;
+}
+.sidenav p{
+    padding: 8px 16px;
+    text-decoration: none;
+    color: #343a40;
+    border: none;
+}
+
+.sidenav a:hover {
+    color: #007bff;
+}
+.auction-list {
+    width: 100%;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin-top: 20px;
+}
+
+.auction-list .card {
+    margin-bottom: 20px;
+}
+

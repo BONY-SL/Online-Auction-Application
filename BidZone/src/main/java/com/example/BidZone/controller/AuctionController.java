@@ -15,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -36,6 +35,9 @@ public class AuctionController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private AuctionFactory auctionFactory;
 
     @GetMapping("/getAuctiondetails")
     public AuctionDTO getAuctiondetails(@RequestParam Long id) throws AuctionNotFoundException {
@@ -75,14 +77,19 @@ public class AuctionController {
         return userService.getUserDetailsById(id);
     }
 
-
-    @Autowired
-    private AuctionFactory auctionFactory;
-
     @GetMapping("/getAuctionsByCategory")
     public List<AuctionDTO> getAuctionsByCategory(@RequestParam Long category) {
         return auctionFactory.getAuctionsByCategory(category);
     }
 
+    @GetMapping("/getmyAllAuctions")
+    List<AuctionDTO> getmyAllAuctions(@RequestParam(value = "username", required = false) String username) {
+        return auctionService.getmyAllAuctions(username);
+    }
 
+    @GetMapping("/getMyAllLisingSpesificOrder")
+    List<AuctionDTO> getMyAllLisingSpesificOrder(@RequestParam(value = "username", required = false) String username,
+                                                 @RequestParam(value = "order", required = false) String order){
+        return auctionFactory.getMyAllLisingSpesificOrder(username,order);
+    }
 }
