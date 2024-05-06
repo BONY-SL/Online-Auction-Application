@@ -80,7 +80,7 @@ public class AuctionController {
     private AuctionFactory auctionFactory;
 
     @GetMapping("/getAuctionsByCategory")
-    public List<AuctionDTO> getAuctionsByCategory(@RequestParam String category) {
+    public List<AuctionDTO> getAuctionsByCategory(@RequestParam Long category) {
         return auctionFactory.getAuctionsByCategory(category);
     }
 
