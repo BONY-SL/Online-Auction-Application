@@ -1,7 +1,7 @@
 package com.example.BidZone.service;
 
 
-import com.example.BidZone.util.AppExceptions;
+import com.example.BidZone.util.CommonAppExceptions;
 import com.example.BidZone.dto.CreateUserDTO;
 import com.example.BidZone.dto.LoginUserDTO;
 import com.example.BidZone.dto.UserDTO;
@@ -34,7 +34,7 @@ public class UserService {
 
     public void registerUser(final CreateUserDTO userDTO){
         if(userRepository.existsByUsername(userDTO.getUserName())){
-            throw new AppExceptions("Username already exists", HttpStatus.BAD_REQUEST);
+            throw new CommonAppExceptions("Username already exists", HttpStatus.BAD_REQUEST);
         }
 
         User user=new User();
@@ -51,7 +51,7 @@ public class UserService {
 
     public UserDTO login(LoginUserDTO loginUserDTO) {
         User user = userRepository.findByUsername(loginUserDTO.getUsername())
-                .orElseThrow(() -> new AppExceptions("Unknown user", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new CommonAppExceptions("Unknown user", HttpStatus.NOT_FOUND));
 
         if (passwordEncoder.matches(CharBuffer.wrap(loginUserDTO.getPassword()), user.getPassword())) {
             UserDTO userDto = modelMapper.map(user, UserDTO.class);
@@ -60,7 +60,7 @@ public class UserService {
             System.out.println(userDto);
             return userDto;
         }
-        throw new AppExceptions("Invalid password", HttpStatus.BAD_REQUEST);
+        throw new CommonAppExceptions("Invalid password", HttpStatus.BAD_REQUEST);
     }
     public UserDTO getUserDetailsById(Long id) {
         System.out.println(id);

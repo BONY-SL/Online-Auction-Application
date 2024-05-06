@@ -7,7 +7,7 @@ import com.example.BidZone.repostry.UserRepository;
 import com.example.BidZone.service.AuctionFactory;
 import com.example.BidZone.service.AuctionService;
 import com.example.BidZone.service.UserService;
-import com.example.BidZone.util.AppExceptions;
+import com.example.BidZone.util.CommonAppExceptions;
 import com.example.BidZone.util.AuctionNotFoundException;
 import com.example.BidZone.util.CategoryNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +52,7 @@ public class AuctionController {
         System.out.println(image);
         System.out.println(username);
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new AppExceptions("Invaid user Name", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new CommonAppExceptions("Invaid user Name", HttpStatus.NOT_FOUND));
 
 
         try{

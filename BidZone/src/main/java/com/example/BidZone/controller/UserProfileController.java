@@ -2,7 +2,7 @@ package com.example.BidZone.controller;
 
 
 import com.example.BidZone.dto.UserProfileUpdateDTO;
-import com.example.BidZone.util.AppExceptions;
+import com.example.BidZone.util.CommonAppExceptions;
 import com.example.BidZone.util.ProfileNotFoundException;
 import com.example.BidZone.dto.UserProfileDTO;
 import com.example.BidZone.service.ProfileService;
@@ -61,7 +61,7 @@ public class UserProfileController {
         try {
             UserProfileDTO updatedProfile = profileService.updateProfile(profileUpdateRequest, image, username);
             return ResponseEntity.ok(updatedProfile);
-        } catch (AppExceptions e) {
+        } catch (CommonAppExceptions e) {
             HttpStatus status = e.getHttpStatus();
             return ResponseEntity.status(status).body(e.getMessage());
         } catch (IOException e) {
