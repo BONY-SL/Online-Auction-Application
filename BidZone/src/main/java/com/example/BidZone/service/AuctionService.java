@@ -2,10 +2,12 @@ package com.example.BidZone.service;
 
 
 import com.example.BidZone.dto.AuctionDTO;
+import com.example.BidZone.dto.BidDTO;
 import com.example.BidZone.dto.ItemDTO;
 import com.example.BidZone.dto.UserDTO;
 import com.example.BidZone.entity.*;
 import com.example.BidZone.repostry.AuctionRepository;
+import com.example.BidZone.repostry.BidRepository;
 import com.example.BidZone.repostry.BiddingItemRepostory;
 import com.example.BidZone.repostry.CategoryRepository;
 import com.example.BidZone.util.AuctionNotFoundException;
@@ -34,6 +36,9 @@ public class AuctionService {
 
     @Autowired
     private ProfileService saveimageService;
+
+    @Autowired
+    private BidRepository bidRepository;
 
     public AuctionDTO createNewAuctions(AuctionDTO auctionDTO, User user, MultipartFile image) throws CategoryNotFoundException, IOException {
         Auction auction = convertToEntity(auctionDTO);
@@ -75,6 +80,9 @@ public class AuctionService {
         if(auction.getCreatedBy()!=null){
             UserDTO userDTO=modelMapper.map(auction.getCreatedBy(),UserDTO.class);
             auctionDTO.setCreatedById(userDTO.getId());
+        }if(auction.getCurrentHighestBid()!=null){
+            BidDTO bidDTO=modelMapper.map(auction.getCurrentHighestBid(),BidDTO.class);
+            auctionDTO.setCurrentHighestBid(bidDTO);
         }
         return auctionDTO;
     }
@@ -89,6 +97,7 @@ public class AuctionService {
 
     public AuctionDTO getAuctiondetails(long auctionId) throws AuctionNotFoundException {
         Optional<Auction> auction = auctionRepository.findById(auctionId);
+
         return convertToDto(auction.orElseThrow(AuctionNotFoundException::new));
     }
 

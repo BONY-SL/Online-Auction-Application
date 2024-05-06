@@ -14,11 +14,45 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         const auction = await response.json();
         await displayAuctionDetails(auction);
+
     } catch (error) {
         console.error('Error fetching auction details:', error);
     }
 });
+async function getTheAllBidsUnderTheAuction(auctionId){
+    try {
 
+        const response = await fetch(`http://localhost:8080/auctionappBidZone/getTheAllBidsUnderTheAuction?auctionId=${auctionId}`);
+        if (!response.ok) {
+            throw new Error("Failed to fetch bids data");
+        }
+
+        const bids = await response.json();
+        console.log(bids)
+        populateBidTable(bids);
+    } catch (error) {
+        console.error("Error fetching bids data:", error);
+    }
+}
+
+function populateBidTable(bids) {
+
+    const tableBody = document.querySelector(".bid-list table tbody");
+    tableBody.innerHTML = "";
+
+    bids.forEach(bid => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${bid.placedByUsername}</td>
+            <td>${new Date(bid.placedAt).toLocaleString()}</td>
+            <td>${bid.comment || "N/A"}</td>
+            <td>${bid.amount.toFixed(2)}</td>
+        `;
+        tableBody.appendChild(row);
+    });
+}
+
+//display Auction Current Details In the database
 async function displayAuctionDetails(auction) {
 
 
@@ -29,9 +63,11 @@ async function displayAuctionDetails(auction) {
     document.querySelector('.starting-price').innerHTML = `<span class="label">Starting Price Rs:</span> ${auction.item.startingPrice}`;
 
 
-    document.querySelector('.highest-bid').innerHTML = auction.currentHighestBid !== null && auction.currentHighestBid !== undefined
-        ? `<span class="label">Current Highest Bid Rs:</span> ${auction.currentHighestBid}`
-        : '<span class="label">Current Highest Bid Rs:</span> No bids yet';
+    if (auction.currentHighestBid && auction.currentHighestBid.amount !== null && auction.currentHighestBid.amount !== undefined) {
+        document.querySelector('.highest-bid').innerHTML = `<span class="label">Current Highest Bid Rs:</span> ${auction.currentHighestBid.amount}`;
+    } else {
+        document.querySelector('.highest-bid').innerHTML = '<span class="label">Current Highest Bid Rs:</span> No bids yet';
+    }
 
 
     document.querySelector('.closing-time').innerHTML = `<span class="label">Closing Time:</span> ${new Date(auction.closingTime).toLocaleString()}`;
@@ -46,12 +82,12 @@ async function displayAuctionDetails(auction) {
     imgElement.style.width = '300px';
     imgElement.style.height = '400px';
     const id=auction.createdById;
-    console.log(id)
+    await getTheAllBidsUnderTheAuction(auction.id);
+
     const userDetails = await fetch(`http://localhost:8080/auctionappBidZone/getUserDetails?id=${id}`)
         .then(response => response.json())
         .catch(error => console.error('Error fetching user details:', error));
 
-    console.log(userDetails)
 
     if (userDetails) {
 
@@ -64,13 +100,59 @@ async function displayAuctionDetails(auction) {
 
 }
 
-function placedBid() {
-    alert('Bid placed successfully!');
+async function placedBid() {
+    const username = localStorage.getItem('username');
 
+    const auctionIdElement = document.querySelector('.auction-id');
+    const auctionIdValue = parseInt(auctionIdElement.textContent.match(/\d+/)[0]);
+    const amount = document.getElementById('amount').value;
+    const comment = document.getElementById('comment').value;
 
-    const modal = document.querySelector('#placeBidModal');
-    modal.classList.remove('show');
+    if (!amount || !comment) {
+        alert('Please fill in both amount and comment');
+        return;
+    }
+
+    const bidToItemDTO = {
+        amount: parseFloat(amount),
+        comment: comment
+    };
+
+    const bidRequestDTO = {
+        auctionId: auctionIdValue,
+        username: username,
+        bidToItemDTO: bidToItemDTO
+    };
+
+    try {
+        const response = await fetch(`http://localhost:8080/auctionappBidZone/bidForAuctionItem`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(bidRequestDTO)
+        });
+
+        if (response.ok) {
+            alert('Bid placed successfully!');
+            const updatedAuctionResponse = await fetch(`http://localhost:8080/auctionappBidZone/getAuctiondetails?id=${auctionIdValue}`);
+            const updatedAuction = await updatedAuctionResponse.json();
+            await displayAuctionDetails(updatedAuction);
+            const modal = document.querySelector('#placeBidModal');
+            modal.classList.remove('show');
+        } else {
+            const errorData = await response.json();
+            console.error(`Error Data: ${JSON.stringify(errorData)}`);
+            alert(`Error: ${errorData.message}`);
+        }
+    } catch (error) {
+        console.error(`Network Error: ${error}`);
+        alert(`Unexpected error: ${error.message}`);
+    }
 }
+
+
+
 
 
 function showPlaceBidModal() {

@@ -19,9 +19,9 @@ public class AuctionFactory {
     @Autowired
     private AuctionRepository auctionRepository;
 
-    public List<AuctionDTO> getAuctionsByCategory(String category) {
+    public List<AuctionDTO> getAuctionsByCategory(Long category) {
         return auctionRepository.findAll().stream()
-                .filter(auction -> auction.getName().getCategory().getName().equalsIgnoreCase(category))
+                .filter(auction -> auction.getName().getCategory().getId().equals(category))
                 .map(auction -> modelMapper.map(auction, AuctionDTO.class))
                 .collect(Collectors.toList());
     }

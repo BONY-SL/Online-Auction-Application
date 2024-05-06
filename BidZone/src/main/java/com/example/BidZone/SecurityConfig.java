@@ -19,9 +19,9 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/auctionappBidZone/registerUser", "/auctionappBidZone/userlogin","/auctionappBidZone/addcategories","/auctionappBidZone/createNewAuctions").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auctionappBidZone/registerUser", "/auctionappBidZone/userlogin","/auctionappBidZone/addcategories","/auctionappBidZone/createNewAuctions","/auctionappBidZone/bidForAuctionItem").permitAll()
                         .requestMatchers(HttpMethod.GET, "/auctionappBidZone/profile", "/auctionappBidZone/profile/{profileId}","/auctionappBidZone/categories","/auctionappBidZone/getAllauctions","/auctionappBidZone/getAuctiondetails","/auctionappBidZone/getUserDetails"
-                        ,"/auctionappBidZone/getAuctionsByCategory").permitAll()
+                        ,"/auctionappBidZone/getAuctionsByCategory","/auctionappBidZone/getTheAllBidsUnderTheAuction").permitAll()
                         .requestMatchers(HttpMethod.PATCH,"/auctionappBidZone/profile").permitAll()
                         .requestMatchers("/uploads/**").permitAll()
                         .anyRequest().authenticated()
