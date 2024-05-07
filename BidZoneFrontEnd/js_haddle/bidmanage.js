@@ -1,6 +1,9 @@
 document.addEventListener('DOMContentLoaded', async () => {
     const params = new URLSearchParams(window.location.search);
     const auctionId = params.get('id');
+    const close=params.get("isclose");
+    console.log(auctionId)
+    console.log(close)
 
     if (!auctionId) {
         console.error('Auction ID not provided');
@@ -13,7 +16,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             throw new Error('Network response was not ok');
         }
         const auction = await response.json();
-        await displayAuctionDetails(auction);
+        if (close === "true") {
+            document.querySelector('.auction-container').style.display = 'none';
+            await displayAuctionDetails(auction);
+        }else {
+            await displayAuctionDetails(auction);
+        }
+
 
     } catch (error) {
         console.error('Error fetching auction details:', error);

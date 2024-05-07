@@ -4,14 +4,13 @@ package com.example.BidZone.controller;
 import com.example.BidZone.dto.BidDTO;
 import com.example.BidZone.dto.BidRequestDTO;
 import com.example.BidZone.dto.BidToItemDTO;
+import com.example.BidZone.dto.ItemDTO;
 import com.example.BidZone.service.BidService;
-import com.example.BidZone.util.AuctionIsClosedException;
-import com.example.BidZone.util.AuctionNotFoundException;
-import com.example.BidZone.util.BidAmountLessException;
-import com.example.BidZone.util.BidForSelfAuctionException;
+import com.example.BidZone.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import java.util.Collections;
 import java.util.List;
@@ -20,6 +19,7 @@ import java.util.List;
 @RestController
 @CrossOrigin
 @RequestMapping("/auctionappBidZone")
+@Controller
 public class BidController {
 
     @Autowired
@@ -31,10 +31,6 @@ public class BidController {
         Long auctionId = bidRequestDTO.getAuctionId();
         String username = bidRequestDTO.getUsername();
         BidToItemDTO bidToItemDTO = bidRequestDTO.getBidToItemDTO();
-
-        System.out.println(bidToItemDTO);
-        System.out.println(auctionId);
-        System.out.println(username);
 
         try {
             bidService.bidForAuctionItem(auctionId, username, bidToItemDTO.getAmount(), bidToItemDTO.getComment());
@@ -48,9 +44,12 @@ public class BidController {
         } catch (BidForSelfAuctionException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(Collections.singletonMap("message", "Cannot place bid on own auction"));
-        } catch (AuctionIsClosedException e) {
+        }catch (AuctionIsClosedException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(Collections.singletonMap("message", "Auction is closed"));
+                    .body(Collections.singletonMap("message","Auction Is Closed"));
+        }catch (BidBelowStartingPriceException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Collections.singletonMap("message", "Bid amount is less than starting price"));
         }
     }
 

@@ -1,6 +1,6 @@
 package com.example.BidZone.service;
 import com.example.BidZone.dto.UserProfileUpdateDTO;
-import com.example.BidZone.util.AppExceptions;
+import com.example.BidZone.util.CommonAppExceptions;
 import com.example.BidZone.util.ProfileNotFoundException;
 import com.example.BidZone.dto.UserProfileDTO;
 import com.example.BidZone.entity.User;
@@ -30,7 +30,7 @@ public class ProfileService {
 
     public UserProfileDTO getProfile(final String userName) {
         User user = userRepository.findByUsername(userName)
-                .orElseThrow(() -> new AppExceptions("Unknown user", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new CommonAppExceptions("Unknown user", HttpStatus.NOT_FOUND));
         return convertToDto(user.getUserProfile());
     }
 
@@ -45,7 +45,7 @@ public class ProfileService {
 
     public UserProfileDTO updateProfile(final UserProfileUpdateDTO profileUpdateRequest, final MultipartFile image, final String userName) throws IOException {
         User user = userRepository.findByUsername(userName)
-                .orElseThrow(() -> new AppExceptions("Unknown user", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new CommonAppExceptions("Unknown user", HttpStatus.NOT_FOUND));
         final UserProfile existingProfile = user.getUserProfile();
         modelMapper.map(profileUpdateRequest, existingProfile);
 

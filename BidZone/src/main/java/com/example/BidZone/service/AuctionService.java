@@ -8,8 +8,8 @@ import com.example.BidZone.dto.UserDTO;
 import com.example.BidZone.entity.*;
 import com.example.BidZone.repostry.AuctionRepository;
 import com.example.BidZone.repostry.BidRepository;
-import com.example.BidZone.repostry.BiddingItemRepostory;
 import com.example.BidZone.repostry.CategoryRepository;
+import com.example.BidZone.util.AuctionMapper;
 import com.example.BidZone.util.AuctionNotFoundException;
 import com.example.BidZone.util.CategoryNotFoundException;
 import org.modelmapper.ModelMapper;
@@ -38,7 +38,8 @@ public class AuctionService {
     private ProfileService saveimageService;
 
     @Autowired
-    private BidRepository bidRepository;
+    private AuctionMapper auctionMapper;
+
 
     public AuctionDTO createNewAuctions(AuctionDTO auctionDTO, User user, MultipartFile image) throws CategoryNotFoundException, IOException {
         Auction auction = convertToEntity(auctionDTO);
@@ -62,43 +63,28 @@ public class AuctionService {
         }
 
         final Auction savedAuction = auctionRepository.save(auction);
-        return convertToDto(savedAuction);
+        return auctionMapper.convertToDto(savedAuction);
     }
 
     private Auction convertToEntity(final AuctionDTO auctionDTO) {
         return modelMapper.map(auctionDTO, Auction.class);
     }
-
-    private AuctionDTO convertToDto(final Auction auction) {
-
-        AuctionDTO auctionDTO = modelMapper.map(auction, AuctionDTO.class);
-        if (auction.getName() != null) {
-            ItemDTO itemDTO = modelMapper.map(auction.getName(), ItemDTO.class);
-            itemDTO.setAuctionId(auctionDTO.getId());
-            auctionDTO.setItem(itemDTO);
-        }
-        if(auction.getCreatedBy()!=null){
-            UserDTO userDTO=modelMapper.map(auction.getCreatedBy(),UserDTO.class);
-            auctionDTO.setCreatedById(userDTO.getId());
-        }if(auction.getCurrentHighestBid()!=null){
-            BidDTO bidDTO=modelMapper.map(auction.getCurrentHighestBid(),BidDTO.class);
-            auctionDTO.setCurrentHighestBid(bidDTO);
-        }
-        return auctionDTO;
-    }
-
-
     public List<AuctionDTO> getAllAuctions() {
-        List<Auction> auctions = auctionRepository.findAll();
-        return auctions.stream()
-                .map(this::convertToDto)
+
+        return auctionRepository.findAll().stream()
+                .map(auctionMapper::convertToDto)
                 .collect(Collectors.toList());
     }
 
     public AuctionDTO getAuctiondetails(long auctionId) throws AuctionNotFoundException {
         Optional<Auction> auction = auctionRepository.findById(auctionId);
+        return auctionMapper.convertToDto(auction.orElseThrow(AuctionNotFoundException::new));
+    }
 
-        return convertToDto(auction.orElseThrow(AuctionNotFoundException::new));
+    public List<AuctionDTO> getmyAllAuctions(final String userName) {
+        return auctionRepository.findAuctionByCreatedByUsername(userName).stream()
+                .map(auctionMapper::convertToDto)
+                .collect(Collectors.toList());
     }
 
 }

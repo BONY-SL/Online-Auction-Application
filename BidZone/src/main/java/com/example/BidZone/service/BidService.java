@@ -3,6 +3,7 @@ package com.example.BidZone.service;
 import com.example.BidZone.dto.BidDTO;
 import com.example.BidZone.entity.Auction;
 import com.example.BidZone.entity.Bid;
+import com.example.BidZone.entity.BiddingItem;
 import com.example.BidZone.entity.User;
 import com.example.BidZone.repostry.AuctionRepository;
 import com.example.BidZone.repostry.BidRepository;
@@ -32,18 +33,32 @@ public class BidService {
 
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public void bidForAuctionItem(final long auctionId, final String userName, final double amount, final String comment)
-            throws AuctionNotFoundException, BidAmountLessException, BidForSelfAuctionException, AuctionIsClosedException {
+            throws AuctionNotFoundException, BidAmountLessException, BidBelowStartingPriceException,BidForSelfAuctionException, AuctionIsClosedException {
 
         final Auction auction = auctionRepository.findByIdWithLock(auctionId)
                 .orElseThrow(AuctionNotFoundException::new);
-
-        final User user = userRepository.findByUsername(userName)
-                .orElseThrow(() -> new RuntimeException("User not found: " + userName));
 
 
         if (auction.getIsClosed()) {
             throw new AuctionIsClosedException();
         }
+
+        final User user = userRepository.findByUsername(userName)
+                .orElseThrow(() -> new RuntimeException("User not found: " + userName));
+
+        final BiddingItem biddingItem = auction.getName();
+        double startingPrice = biddingItem.getStartingPrice();
+
+        if (amount < startingPrice) {
+            throw new BidBelowStartingPriceException();
+        }
+
+        final Bid bid = new Bid();
+        bid.setAuction(auction);
+        bid.setPlacedBy(user);
+        bid.setAmount(amount);
+        bid.setComment(comment);
+
         if (auction.getCreatedBy().getId().equals(user.getId())) {
             throw new BidForSelfAuctionException();
         }
@@ -51,17 +66,11 @@ public class BidService {
         if (highestBid != null && highestBid.getAmount() >= amount) {
             throw new BidAmountLessException();
         }
-        final Bid bid = new Bid();
-        bid.setAuction(auction);
-        bid.setPlacedBy(user);
-        bid.setAmount(amount);
-        bid.setComment(comment);
 
         auction.setCurrentHighestBid(bid);
         bidRepository.save(bid);
     }
 
-    //this method use for Under the AuctionId get All Bids are placed
     public List<BidDTO> getTheAllBidsUnderTheAuction(final long auctionId) {
         List<Bid> bids = bidRepository.findAllByAuctionIdOrderByAmountDesc(auctionId);
         return bids.stream().map(this::convertToDto).toList();
