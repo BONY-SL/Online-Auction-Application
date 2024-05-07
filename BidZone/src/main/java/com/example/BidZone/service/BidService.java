@@ -94,12 +94,12 @@ public class BidService {
                     // Ensure the auctionId is set if the auction object is not null
                     if (bid.getAuction() != null) {
                         myBidDTO.setAuctionId(bid.getAuction().getId());
-                    }if(bid.getAuction().getAction_name()!=null){
                         myBidDTO.setAuctionName(bid.getAuction().getAction_name());
-                    }if(bid.getAuction().getCurrentHighestBid()!=null) {
-                        myBidDTO.setAuctionCurrentHighestBidAmount(bid.getAuction().getCurrentHighestBid().getAmount());
-                    }if(bid.getAuction().getClosingTime()!=null) {
                         myBidDTO.setAuctionClosingTime(bid.getAuction().getClosingTime());
+
+                        if (bid.getAuction().getCurrentHighestBid() != null) {
+                            myBidDTO.setAuctionCurrentHighestBidAmount(bid.getAuction().getCurrentHighestBid().getAmount());
+                        }
                     }
                     myBidDTO.setAuctionCurrentHighestBidAmount(bid.getAmount());
                     return myBidDTO;
