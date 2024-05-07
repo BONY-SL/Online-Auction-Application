@@ -1,6 +1,4 @@
 package com.example.BidZone.service;
-
-
 import com.example.BidZone.util.CommonAppExceptions;
 import com.example.BidZone.dto.CreateUserDTO;
 import com.example.BidZone.dto.LoginUserDTO;
@@ -32,7 +30,7 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public void registerUser(final CreateUserDTO userDTO){
+    public void registerUser(final CreateUserDTO userDTO) throws CommonAppExceptions {
         if(userRepository.existsByUsername(userDTO.getUserName())){
             throw new CommonAppExceptions("Username already exists", HttpStatus.BAD_REQUEST);
         }
@@ -49,7 +47,7 @@ public class UserService {
 
     }
 
-    public UserDTO login(LoginUserDTO loginUserDTO) {
+    public UserDTO login(LoginUserDTO loginUserDTO) throws CommonAppExceptions {
         User user = userRepository.findByUsername(loginUserDTO.getUsername())
                 .orElseThrow(() -> new CommonAppExceptions("Unknown user", HttpStatus.NOT_FOUND));
 

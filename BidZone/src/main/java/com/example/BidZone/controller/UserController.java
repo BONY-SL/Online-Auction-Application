@@ -3,6 +3,7 @@ import com.example.BidZone.dto.CreateUserDTO;
 import com.example.BidZone.dto.LoginUserDTO;
 import com.example.BidZone.dto.UserDTO;
 import com.example.BidZone.service.UserService;
+import com.example.BidZone.util.CommonAppExceptions;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,8 @@ public class UserController {
             return new ResponseEntity<>("User registered successfully", HttpStatus.CREATED);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (CommonAppExceptions e) {
+            throw new RuntimeException(e);
         }
 
     }
@@ -38,6 +41,8 @@ public class UserController {
             return ResponseEntity.ok(userDto);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (CommonAppExceptions e) {
+            throw new RuntimeException(e);
         }
     }
 

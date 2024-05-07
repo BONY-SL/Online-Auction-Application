@@ -23,6 +23,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/auctionappBidZone/profile", "/auctionappBidZone/profile/{profileId}","/auctionappBidZone/categories","/auctionappBidZone/getAllauctions","/auctionappBidZone/getAuctiondetails","/auctionappBidZone/getUserDetails"
                         ,"/auctionappBidZone/getAuctionsByCategory","/auctionappBidZone/getTheAllBidsUnderTheAuction","/auctionappBidZone/getmyAllAuctions","/auctionappBidZone/getMyAllLisingSpesificOrder").permitAll()
                         .requestMatchers(HttpMethod.PATCH,"/auctionappBidZone/profile").permitAll()
+                        .requestMatchers(HttpMethod.PUT,"/auctionappBidZone/updateAuction").permitAll()
                         .requestMatchers("/uploads/**").permitAll()
                         .anyRequest().authenticated()
                 );

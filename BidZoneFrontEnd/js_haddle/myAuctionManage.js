@@ -86,19 +86,106 @@ async function filterMyAuctions(){
     }
 }
 
-function handleViewBids(auctionId) {
+async function handleViewBids(auctionId) {
 
     const id = parseInt(auctionId);
     const auction = MyAucyions.find(a => a.id === id);
-    console.log(auction)
+    if (auction) {
+        console.log(auction);
+        const bidList = document.getElementById('bid-list');
+        const tbody = bidList.querySelector('tbody');
+        tbody.innerHTML = '';
+        try {
+            const response = await fetch(`http://localhost:8080/auctionappBidZone/getTheAllBidsUnderTheAuction?auctionId=${id}`);
+            if (!response.ok) {
+                throw new Error("Failed to fetch bids data");
+            }
+            const bids = await response.json();
+            bids.forEach(bid => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${bid.placedByUsername}</td>
+                    <td>${new Date(bid.placedAt).toLocaleString()}</td>
+                    <td>${bid.comment}</td>
+                    <td>${bid.amount}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        } catch (error) {
+            console.error("Error fetching bids data:", error);
+        }
 
+        bidList.style.display = 'block';
+
+        const closeBtn = document.getElementById('close-bid-list');
+        closeBtn.addEventListener('click', () => {
+            bidList.style.display = 'none';
+        });
+    } else {
+        alert(`No auction found with ID: ${auctionId}`);
+    }
 }
 
 function handleUpdateDetails(auctionId) {
-    alert(`Updating details for auction: ${auctionId}`);
 
+    const id = parseInt(auctionId);
+    const auction = MyAucyions.find(a => a.id === id);
+    if (auction) {
+        document.getElementById('auctionid').textContent = auction.id;
+        document.getElementById('auctionName').value = auction.action_name;
+        document.getElementById('description').value = auction.description;
+        document.getElementById('startingPrice').value = auction.item.startingPrice;
+        document.getElementById('closingTime').value = auction.closingTime;
+        document.querySelector('.form-container').style.display = 'block'; // Show the form
+    }
+
+    document.getElementById('close-au-list').addEventListener('click', function() {
+        document.querySelector('.form-container').style.display = 'none';
+    });
 }
+
 
 function handleDeleteListing(auctionId) {
     alert(`Deleting auction listing: ${auctionId}`);
+
 }
+async function updateAuction() {
+    const auctionId = parseInt(document.getElementById('auctionid').textContent);
+    const auctionName = document.getElementById('auctionName').value;
+    const description = document.getElementById('description').value;
+    const startingPrice = parseFloat(document.getElementById('startingPrice').value);
+    const closingTime = document.getElementById('closingTime').value;
+
+    const updatedAuction = {
+        id: auctionId,
+        action_name: auctionName,
+        description: description,
+        item: {
+            startingPrice: startingPrice
+        },
+        closingTime: closingTime
+    };
+
+    console.log(updatedAuction);
+
+    fetch('http://localhost:8080/auctionappBidZone/updateAuction', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updatedAuction)
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to update auction.');
+            }
+            alert('Auction updated successfully.');
+            document.querySelector('.form-container').style.display = 'none';
+            fetchMyAuctions(); // Ensure this function exists and fetches updated auctions
+        })
+        .catch(error => {
+            console.error('Error updating auction:', error);
+        });
+}
+
+

@@ -1,22 +1,16 @@
 package com.example.BidZone.service;
-
-
 import com.example.BidZone.dto.AuctionDTO;
-import com.example.BidZone.dto.BidDTO;
 import com.example.BidZone.dto.ItemDTO;
-import com.example.BidZone.dto.UserDTO;
 import com.example.BidZone.entity.*;
 import com.example.BidZone.repostry.AuctionRepository;
-import com.example.BidZone.repostry.BidRepository;
 import com.example.BidZone.repostry.CategoryRepository;
 import com.example.BidZone.util.AuctionMapper;
-import com.example.BidZone.util.AuctionNotFoundException;
-import com.example.BidZone.util.CategoryNotFoundException;
+import com.example.BidZone.util.CommonAppExceptions;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -41,13 +35,13 @@ public class AuctionService {
     private AuctionMapper auctionMapper;
 
 
-    public AuctionDTO createNewAuctions(AuctionDTO auctionDTO, User user, MultipartFile image) throws CategoryNotFoundException, IOException {
+    public AuctionDTO createNewAuctions(AuctionDTO auctionDTO, User user, MultipartFile image) throws CommonAppExceptions, IOException {
         Auction auction = convertToEntity(auctionDTO);
 
         ItemDTO itemDto = auctionDTO.getItem();
         Optional<Category> category = categoryRepository.findById(itemDto.getCategory().getId());
         if (category.isEmpty()) {
-            throw new CategoryNotFoundException();
+            throw new CommonAppExceptions("Category Is Empty", HttpStatus.NOT_FOUND);
         }
 
         BiddingItem item = new BiddingItem(itemDto.getName(), category.get());
@@ -76,15 +70,38 @@ public class AuctionService {
                 .collect(Collectors.toList());
     }
 
-    public AuctionDTO getAuctiondetails(long auctionId) throws AuctionNotFoundException {
+    public AuctionDTO getAuctiondetails(long auctionId) throws CommonAppExceptions {
         Optional<Auction> auction = auctionRepository.findById(auctionId);
-        return auctionMapper.convertToDto(auction.orElseThrow(AuctionNotFoundException::new));
+        return auctionMapper.convertToDto(auction.orElseThrow(() -> new CommonAppExceptions("Auction Id Not Found", HttpStatus.NOT_FOUND)));
     }
 
     public List<AuctionDTO> getmyAllAuctions(final String userName) {
         return auctionRepository.findAuctionByCreatedByUsername(userName).stream()
                 .map(auctionMapper::convertToDto)
                 .collect(Collectors.toList());
+    }
+
+    public AuctionDTO updateAuction(AuctionDTO auctionDTO) throws CommonAppExceptions {
+        Optional<Auction> optionalAuction = auctionRepository.findById(auctionDTO.getId());
+
+        if (optionalAuction.isEmpty()) {
+            throw new CommonAppExceptions("Auction Not Found Exception", HttpStatus.NOT_FOUND);
+        }
+
+        System.out.println(auctionDTO);
+
+        Auction auction = optionalAuction.get();
+        auction.setAction_name(auctionDTO.getAction_name());
+        auction.setDescription(auctionDTO.getDescription());
+        auction.setClosingTime(auctionDTO.getClosingTime());
+
+        if (auctionDTO.getItem() != null) {
+
+            auction.getName().setStartingPrice(auctionDTO.getItem().getStartingPrice());
+
+        }
+        Auction updatedAuction = auctionRepository.save(auction);
+        return auctionMapper.convertToDto(updatedAuction);
     }
 
 }
