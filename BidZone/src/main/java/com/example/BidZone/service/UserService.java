@@ -33,10 +33,13 @@ public class UserService {
     public void registerUser(final CreateUserDTO userDTO) throws CommonAppExceptions {
         if(userRepository.existsByUsername(userDTO.getUserName())){
             throw new CommonAppExceptions("Username already exists", HttpStatus.BAD_REQUEST);
+        }if(userRepository.existsByEmail(userDTO.getEmail())){
+            throw new CommonAppExceptions("Email already exists", HttpStatus.BAD_REQUEST);
         }
 
         User user=new User();
         user.setUsername(userDTO.getUserName());
+        user.setEmail(userDTO.getEmail());
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 
         UserProfile userProfile=new UserProfile();
@@ -82,5 +85,10 @@ public class UserService {
         }
     }
 
+     public boolean checkUserEmailExists(String email) {
+        return userRepository.findByEmail(email).isPresent();
+    }
 
 }
+
+

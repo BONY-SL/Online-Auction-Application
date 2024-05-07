@@ -1,6 +1,7 @@
 package com.example.BidZone.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,6 +24,11 @@ public class User  {
     @Column(nullable = false, unique = true)
     private String username;
     private String password;
+
+    @Email
+    @Column(nullable = false, unique = true)
+    private String email;
+
 
     public User(String username, String password) {
         this.username = username;

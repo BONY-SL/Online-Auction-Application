@@ -11,6 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 @RestController
 @CrossOrigin
 @RequestMapping("/auctionappBidZone")
@@ -26,12 +29,16 @@ public class UserController {
         try {
             userService.registerUser(createUserDTO);
             return new ResponseEntity<>("User registered successfully", HttpStatus.CREATED);
-        } catch (RuntimeException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        } catch (CommonAppExceptions e) {
-            throw new RuntimeException(e);
+        } catch (CommonAppExceptions ex) {
+            return  handleCommonAppExceptions (ex);
         }
 
+    }
+
+    @ExceptionHandler(CommonAppExceptions.class)
+    public ResponseEntity<BidController.ErrorResponse> handleCommonAppExceptions(CommonAppExceptions ex) {
+        BidController.ErrorResponse errorResponse = new BidController.ErrorResponse(ex.getMessage());
+        return ResponseEntity.status(ex.getHttpStatus()).body(errorResponse);
     }
 
     @PostMapping("/userlogin")
@@ -45,5 +52,22 @@ public class UserController {
             throw new RuntimeException(e);
         }
     }
+
+    @PostMapping("/validateUserEmailForResetPassword")
+     public ResponseEntity<String> validateUserEmailForResetPassword(@RequestParam(value = "email", required = false) String email) {
+        System.out.println(email);
+        try {
+            boolean userExists = userService.checkUserEmailExists(email);
+            if (userExists) {
+                return ResponseEntity.ok("true");
+            } else {
+                return ResponseEntity.ok("false");
+            }
+        } catch (Exception e) {
+            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error processing request");
+        }
+    }
+
 
 }
