@@ -44,6 +44,7 @@ public class AuctionMapper {
                 bidDTO.setPlacedById(auction.getCurrentHighestBid().getPlacedBy().getId());
             }
         }
+        auctionDTO.setClosed(auction.getIsClosed());
         return auctionDTO;
     }
 }

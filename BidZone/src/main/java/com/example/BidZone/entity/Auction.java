@@ -55,7 +55,7 @@ public class Auction {
 
     @PrePersist
     public void prePersist() {
-        final LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("UTC"));
+        final LocalDateTime localDateTime = LocalDateTime.now();
         if(closingTime == null) {
             closingTime = localDateTime.plusWeeks(1);
         }
@@ -65,7 +65,7 @@ public class Auction {
     }
 
     public boolean getIsClosed() {
-        final LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("UTC"));
-        return localDateTime.isAfter(closingTime);
+        final LocalDateTime currentTime = LocalDateTime.now();
+        return currentTime.isAfter(closingTime);
     }
 }

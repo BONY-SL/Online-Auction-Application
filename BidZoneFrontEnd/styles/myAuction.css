@@ -38,3 +38,12 @@
     margin-bottom: 20px;
 }
 
+.closed-auction {
+    border: 0 solid red;
+    box-shadow: 0 0 30px red;
+}
+
+.open-auction {
+    border: 0 solid green;
+    box-shadow: 0 0 30px green;
+}

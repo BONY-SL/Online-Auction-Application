@@ -94,3 +94,12 @@
 .popup-form button[type='button']:hover {
     background-color: #9a9c9d;
 }
+.closed-auction {
+    border: 10px solid red;
+    box-shadow: 0 0 30px red;
+}
+
+.open-auction {
+    border: 10px solid green;
+    box-shadow: 0 0 30px green;
+}

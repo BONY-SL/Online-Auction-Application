@@ -7,5 +7,6 @@ async function filterCategories() {
 
     const response = await fetch(url);
     const auctions = await response.json();
+    console.log(auctions)
     displayAuctions(auctions);
 }

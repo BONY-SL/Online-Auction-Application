@@ -26,8 +26,7 @@ public class AuctionFactory {
     public List<AuctionDTO> getAuctionsByCategory(Long category) {
         return auctionRepository.findAll().stream()
                 .filter(auction -> auction.getName().getCategory().getId().equals(category))
-                .map(auction -> modelMapper.map(auction, AuctionDTO.class))
-                .collect(Collectors.toList());
+                .map(auctionMapper::convertToDto).collect(Collectors.toList());
     }
 
     public List<AuctionDTO> getMyAllLisingSpesificOrder(String userName, String order) {
