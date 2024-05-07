@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -89,23 +90,16 @@ public class BidService {
         List<Bid> bids = bidRepository.findBidByPlacedByUsernameOrderByPlacedAtDesc(userName);
 
         return bids.stream()
-                .map(bid -> {
-                    MyBidDTO myBidDTO = modelMapper.map(bid, MyBidDTO.class);
-                    // Ensure the auctionId is set if the auction object is not null
-                    if (bid.getAuction() != null) {
-                        myBidDTO.setAuctionId(bid.getAuction().getId());
-                        myBidDTO.setAuctionName(bid.getAuction().getAction_name());
-                        myBidDTO.setAuctionClosingTime(bid.getAuction().getClosingTime());
-
-                        if (bid.getAuction().getCurrentHighestBid() != null) {
-                            myBidDTO.setAuctionCurrentHighestBidAmount(bid.getAuction().getCurrentHighestBid().getAmount());
-                        }
-                    }
-                    myBidDTO.setAuctionCurrentHighestBidAmount(bid.getAmount());
-                    return myBidDTO;
-                })
+                .map(bid -> new MyBidDTOBuilder()
+                        .withAuctionId(bid.getAuction() != null ? bid.getAuction().getId() : null)
+                        .withAuctionName(bid.getAuction() != null ? bid.getAuction().getAction_name() : null)
+                        .withCurrentHighestBidAmount(BigDecimal.valueOf(bid.getAuction() != null && bid.getAuction().getCurrentHighestBid() != null ? bid.getAuction().getCurrentHighestBid().getAmount() : null))
+                        .withClosingTime(bid.getAuction() != null ? bid.getAuction().getClosingTime() : null)
+                        .withAmount(BigDecimal.valueOf(bid.getAmount()))
+                        .build())
                 .collect(Collectors.toList());
     }
+
 
 
 
