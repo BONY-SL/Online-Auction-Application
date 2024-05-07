@@ -8,27 +8,7 @@ Create Online Auction Application Using JAVA Consepts ORM,Threads,Design Pattern
 Code Examples User Profile Manage
 
 
-package com.example.BidZone.controller;
 
-
-import com.example.BidZone.dto.UserProfileUpdateDTO;
-import com.example.BidZone.util.CommonAppExceptions;
-import com.example.BidZone.util.ProfileNotFoundException;
-import com.example.BidZone.dto.UserProfileDTO;
-import com.example.BidZone.service.ProfileService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.security.Principal;
-
-@RestController
-@CrossOrigin
-@RequestMapping("/auctionappBidZone")
-public class UserProfileController {
 
     @Autowired
     private ProfileService profileService;
@@ -81,10 +61,7 @@ public class UserProfileController {
 
 
 
-}
-    private UserProfileDTO convertToDto(final UserProfile profile) {
-        return modelMapper.map(profile, UserProfileDTO.class);
-    }
+
 
     public UserProfileDTO updateProfile(final UserProfileUpdateDTO profileUpdateRequest, final MultipartFile image, final String userName) throws IOException {
         User user = userRepository.findByUsername(userName)
