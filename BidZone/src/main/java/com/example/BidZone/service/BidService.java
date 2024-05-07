@@ -1,6 +1,7 @@
 package com.example.BidZone.service;
 
 import com.example.BidZone.dto.BidDTO;
+import com.example.BidZone.dto.MyBidDTO;
 import com.example.BidZone.entity.Auction;
 import com.example.BidZone.entity.Bid;
 import com.example.BidZone.entity.User;
@@ -8,12 +9,14 @@ import com.example.BidZone.repostry.AuctionRepository;
 import com.example.BidZone.repostry.BidRepository;
 import com.example.BidZone.repostry.UserRepository;
 import com.example.BidZone.util.*;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -28,6 +31,9 @@ public class BidService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
 
     @Transactional(isolation = Isolation.SERIALIZABLE)
@@ -78,5 +84,32 @@ public class BidService {
         return bidDTO;
 
     }
+
+    public List<MyBidDTO> findBidsPlacedByUser(final String userName) {
+        List<Bid> bids = bidRepository.findBidByPlacedByUsernameOrderByPlacedAtDesc(userName);
+
+        return bids.stream()
+                .map(bid -> {
+                    MyBidDTO myBidDTO = modelMapper.map(bid, MyBidDTO.class);
+                    // Ensure the auctionId is set if the auction object is not null
+                    if (bid.getAuction() != null) {
+                        myBidDTO.setAuctionId(bid.getAuction().getId());
+                    }if(bid.getPlacedAt()!=null){
+                        myBidDTO.setPlacedAt(bid.getPlacedAt());
+                    }if(bid.getPlacedBy()!=null){
+                        myBidDTO.setPlacedById(bid.getId());
+                    }if(bid.getComment()!=null){
+                        myBidDTO.setComment(bid.getComment());
+                    }
+                    myBidDTO.setAuctionCurrentHighestBidAmount(bid.getAmount());
+                    return myBidDTO;
+                })
+                .collect(Collectors.toList());
+    }
+
+
+
+
+
 
 }

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,6 +8,8 @@
     <title>Bid Zone Online Auction</title>
     <link rel="icon" type="image/png" href="../styles/Screenshot 2024-05-05 105855.png">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+
     <style>
         body {
             background-color: #f7f9fc;
@@ -27,71 +30,36 @@
     <div class="collapse navbar-collapse">
     </div>
 </nav>
-    
-    <div class="container mt-5">
-        <div class="bids-container">
-            <h3>Your bids:</h3>
-            <h4>All Bids</h4>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Auction</th>
-                        <th>Placed At</th>
-                        <th>Comment</th>
-                        <th>Amount</th>
-                        <th>Highest Bid</th>
-                        <th>Auction Closes in</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><a href="#">Unique book for sale</a></td>
-                        <td>a minute ago</td>
-                        <td>I want to buy this</td>
-                        <td class="text-success">$1000</td>
-                        <td class="text-success">$1000</td>
-                        <td>in a month</td>
-                    </tr>
-                    <tr>
-                        <td><a href="#">Selling copier paper</a></td>
-                        <td>a minute ago</td>
-                        <td>-</td>
-                        <td class="text-success">$99.9</td>
-                        <td class="text-success">$99.9</td>
-                        <td>in 2 days</td>
-                    </tr>
-                    <tr>
-                        <td><a href="#">Miracle legumes up for auction</a></td>
-                        <td>5 minutes ago</td>
-                        <td>I know magical things</td>
-                        <td class="text-success">$10</td>
-                        <td class="text-success">$10</td>
-                        <td>in 2 days</td>
-                    </tr>
-                    <tr>
-                        <td><a href="#">Unique book for sale</a></td>
-                        <td>5 minutes ago</td>
-                        <td>-</td>
-                        <td class="text-success">$999</td>
-                        <td class="text-success">$1000</td>
-                        <td>in a month</td>
-                    </tr>
-                    <tr>
-                        <td><a href="#">Miracle legumes up for auction</a></td>
-                        <td>7 minutes ago</td>
-                        <td>-</td>
-                        <td class="text-success">$2</td>
-                        <td class="text-success">$10</td>
-                        <td>in 2 days</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<div class="container mt-5">
+    <div class="bids-container">
+        <h3>Your bids:</h3>
+        <h4>All Bids</h4>
+        <table id="bidsTable" class="table">
+            <thead>
+            <tr>
+                <th>Auction</th>
+                <th>Placed At</th>
+                <th>Comment</th>
+                <th>Amount</th>
+                <th>Highest Bid</th>
+                <th>Auction Closes in</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="../js_haddle/mybid.js"></script>
 </body>
 
 </html>
+
+
+
