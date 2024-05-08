@@ -17,6 +17,9 @@
     <script>
         function gotoLogin() {
             if (confirm("Are you sure you want to log out?")) {
+                localStorage.clear();
+                const name=localStorage.getItem("username")
+                console.log(name)
                 window.location.href = 'index.html';
             } else {
                 return false;

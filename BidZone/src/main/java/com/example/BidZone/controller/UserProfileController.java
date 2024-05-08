@@ -26,7 +26,7 @@ public class UserProfileController {
     private ProfileService profileService;
 
     @GetMapping("/profile")
-    public ResponseEntity<?> getCurrentUserProfile(@RequestParam(value = "username", required = false) String username, Principal principal) {
+    public ResponseEntity<?> getCurrentUserProfile(@RequestParam(value = "username", required = false) String username, Principal principal) throws CommonAppExceptions {
         String effectiveUsername;
         System.out.println(3);
         if (username != null && !username.isEmpty()) {

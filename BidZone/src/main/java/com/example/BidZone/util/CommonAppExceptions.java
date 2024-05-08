@@ -2,9 +2,11 @@ package com.example.BidZone.util;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Getter
-public class CommonAppExceptions extends RuntimeException{
+@ResponseStatus(code = HttpStatus.BAD_REQUEST)
+public class CommonAppExceptions extends Exception{
 
     private final HttpStatus status;
 

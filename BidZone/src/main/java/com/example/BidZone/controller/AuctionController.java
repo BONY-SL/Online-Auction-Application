@@ -8,8 +8,6 @@ import com.example.BidZone.service.AuctionFactory;
 import com.example.BidZone.service.AuctionService;
 import com.example.BidZone.service.UserService;
 import com.example.BidZone.util.CommonAppExceptions;
-import com.example.BidZone.util.AuctionNotFoundException;
-import com.example.BidZone.util.CategoryNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -42,28 +40,27 @@ public class AuctionController {
     private AuctionFactory auctionFactory;
 
     @GetMapping("/getAuctiondetails")
-    public AuctionDTO getAuctiondetails(@RequestParam Long id) throws AuctionNotFoundException {
+    public AuctionDTO getAuctiondetails(@RequestParam Long id) throws CommonAppExceptions {
         return auctionService.getAuctiondetails(id);
+
     }
 
     @PostMapping(value="/createNewAuctions",consumes = {"multipart/form-data"})
     public AuctionDTO  createNewAuctions(@RequestPart("auction") AuctionDTO auctionDTO,
                                          @RequestPart(required = false) MultipartFile image,
-                                         @RequestParam(value = "username", required = false) String username){
+                                         @RequestParam(value = "username", required = false) String username) throws CommonAppExceptions {
         System.out.println(auctionDTO);
         System.out.println(image);
         System.out.println(username);
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new CommonAppExceptions("Invaid user Name", HttpStatus.NOT_FOUND));
 
-
         try{
             return auctionService.createNewAuctions(auctionDTO,user,image);
-
-        }catch (CategoryNotFoundException e){
+        }catch (CommonAppExceptions e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Invalid Category");
-        }catch (IOException e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
     }
@@ -93,5 +90,10 @@ public class AuctionController {
     List<AuctionDTO> getMyAllLisingSpesificOrder(@RequestParam(value = "username", required = false) String username,
                                                  @RequestParam(value = "order", required = false) String order){
         return auctionFactory.getMyAllLisingSpesificOrder(username,order);
+    }
+
+    @PutMapping("/updateAuction")
+    public AuctionDTO updateAuction(@RequestBody AuctionDTO auctionDTO) throws CommonAppExceptions {
+        return auctionService.updateAuction(auctionDTO);
     }
 }

@@ -9,7 +9,10 @@ import com.example.BidZone.entity.Auction;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
+
+@Service
 @Component
 public class AuctionMapper {
 

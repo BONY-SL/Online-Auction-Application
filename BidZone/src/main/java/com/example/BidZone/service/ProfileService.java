@@ -28,7 +28,7 @@ public class ProfileService {
     @Autowired
     private ModelMapper modelMapper;
 
-    public UserProfileDTO getProfile(final String userName) {
+    public UserProfileDTO getProfile(final String userName) throws CommonAppExceptions {
         User user = userRepository.findByUsername(userName)
                 .orElseThrow(() -> new CommonAppExceptions("Unknown user", HttpStatus.NOT_FOUND));
         return convertToDto(user.getUserProfile());
@@ -43,7 +43,7 @@ public class ProfileService {
         return modelMapper.map(profile, UserProfileDTO.class);
     }
 
-    public UserProfileDTO updateProfile(final UserProfileUpdateDTO profileUpdateRequest, final MultipartFile image, final String userName) throws IOException {
+    public UserProfileDTO updateProfile(final UserProfileUpdateDTO profileUpdateRequest, final MultipartFile image, final String userName) throws IOException, CommonAppExceptions {
         User user = userRepository.findByUsername(userName)
                 .orElseThrow(() -> new CommonAppExceptions("Unknown user", HttpStatus.NOT_FOUND));
         final UserProfile existingProfile = user.getUserProfile();
