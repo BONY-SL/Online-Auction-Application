@@ -11,7 +11,7 @@ public class EmailService {
     @Autowired
     private JavaMailSender emailSender;
 
-    public void sendUserCredentials(String to, String subject, String text) {
+    synchronized public void sendUserOTPcODE(String to, String subject, String text) {
 
         System.out.println(to+subject+text);
         SimpleMailMessage message = new SimpleMailMessage();

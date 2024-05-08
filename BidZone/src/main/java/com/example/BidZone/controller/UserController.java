@@ -1,9 +1,13 @@
 package com.example.BidZone.controller;
 import com.example.BidZone.dto.CreateUserDTO;
 import com.example.BidZone.dto.LoginUserDTO;
+import com.example.BidZone.dto.MailRequestDTO;
 import com.example.BidZone.dto.UserDTO;
+import com.example.BidZone.service.EmailService;
 import com.example.BidZone.service.UserService;
 import com.example.BidZone.util.CommonAppExceptions;
+import com.example.BidZone.util.OTPMange;
+import com.example.BidZone.util.UserMailAndOTPSerailzeble;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,6 +27,12 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private EmailService emailService;
+
+    @Autowired
+    private OTPMange otpMange;
 
 
     @PostMapping("/registerUser")
@@ -69,5 +80,68 @@ public class UserController {
         }
     }
 
+    @PostMapping("/sendmailToUser")
+    synchronized public ResponseEntity<?> sendMailToUser(@RequestBody MailRequestDTO mailRequest) {
+
+        try {
+            String otpCode = generateOTP();
+
+            //Seralization in User OTP and Email
+            UserMailAndOTPSerailzeble userMailAndOTPSerailzeble=new UserMailAndOTPSerailzeble();
+            userMailAndOTPSerailzeble.setOTP(otpCode);
+            userMailAndOTPSerailzeble.setEmail(mailRequest.getTo());
+            otpMange.serializeInventory(otpCode,userMailAndOTPSerailzeble);
+
+            String emailContent = mailRequest.getContent() + "\n\nYour OTP code: " + otpCode;
+
+            emailService.sendUserOTPcODE(mailRequest.getTo(), mailRequest.getSubject(), emailContent);
+            return new ResponseEntity<>("Email sent successfully", HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to send email", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    synchronized private String generateOTP() {
+
+        synchronized (this){
+            Random random = new Random();
+            int otp = 10000 + random.nextInt(90000000);
+            return String.valueOf(otp);
+        }
+
+    }
+
+    @PostMapping("/verifyGetOtp")
+    public ResponseEntity<?> verifyGetOtp(@RequestParam(value = "otp", required = false) String otp){
+        try {
+            UserMailAndOTPSerailzeble userMailAndOTPDeSerailzeble=otpMange.deserializeInventory(otp);
+
+            if (!userMailAndOTPDeSerailzeble.getOTP().isEmpty() && !userMailAndOTPDeSerailzeble.getEmail().isEmpty() && userMailAndOTPDeSerailzeble.getOTP().equals(otp)) {
+                return ResponseEntity.ok(userMailAndOTPDeSerailzeble.getOTP());
+            } else {
+                return ResponseEntity.ok("false");
+            }
+        } catch (Exception e) {
+            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Invalid OTP Code");
+        }
+    }
+
+    @PutMapping ("/resetPassword")
+    public ResponseEntity<?> resetPassword(@RequestParam(value = "otp", required = false) String otp,
+                                           @RequestParam(value = "password", required = false) String password){
+
+        try {
+            UserMailAndOTPSerailzeble userMailAndOTPDeSerailzeble=otpMange.deserializeInventory(otp);
+
+            userService.resetPassword(userMailAndOTPDeSerailzeble,password);
+
+            return ResponseEntity.ok(userMailAndOTPDeSerailzeble);
+        } catch (Exception e) {
+            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Invalid User Details");
+        }
+
+    }
 
 }

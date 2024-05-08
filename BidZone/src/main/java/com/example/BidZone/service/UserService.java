@@ -1,18 +1,19 @@
 package com.example.BidZone.service;
+import com.example.BidZone.dto.*;
 import com.example.BidZone.util.CommonAppExceptions;
-import com.example.BidZone.dto.CreateUserDTO;
-import com.example.BidZone.dto.LoginUserDTO;
-import com.example.BidZone.dto.UserDTO;
-import com.example.BidZone.dto.UserProfileDTO;
 import com.example.BidZone.entity.User;
 import com.example.BidZone.entity.UserProfile;
 import com.example.BidZone.repostry.UserRepository;
+import com.example.BidZone.util.UserMailAndOTPSerailzeble;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.nio.CharBuffer;
 import java.util.Optional;
@@ -29,6 +30,7 @@ public class UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
 
     public void registerUser(final CreateUserDTO userDTO) throws CommonAppExceptions {
         if(userRepository.existsByUsername(userDTO.getUserName())){
@@ -48,6 +50,15 @@ public class UserService {
         user.setUserProfile(userProfile);
         userRepository.save(user);
 
+    }
+
+    public void resetPassword(UserMailAndOTPSerailzeble userMailAndOTPSerailzeble,String password) throws CommonAppExceptions {
+
+        User user=userRepository.findByEmail(userMailAndOTPSerailzeble.getEmail())
+                .orElseThrow(()->new CommonAppExceptions("Invalid Email Address",HttpStatus.NOT_FOUND));
+
+        user.setPassword(passwordEncoder.encode(password));
+        userRepository.save(user);
     }
 
     public UserDTO login(LoginUserDTO loginUserDTO) throws CommonAppExceptions {
