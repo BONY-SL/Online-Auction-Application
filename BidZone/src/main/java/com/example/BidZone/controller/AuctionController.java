@@ -7,15 +7,13 @@ import com.example.BidZone.repostry.UserRepository;
 import com.example.BidZone.service.AuctionFactory;
 import com.example.BidZone.service.AuctionService;
 import com.example.BidZone.service.UserService;
-import com.example.BidZone.util.AppExceptions;
-import com.example.BidZone.util.AuctionNotFoundException;
-import com.example.BidZone.util.CategoryNotFoundException;
+import com.example.BidZone.util.CommonAppExceptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -23,6 +21,7 @@ import java.util.List;
 @RestController
 @CrossOrigin
 @RequestMapping("/auctionappBidZone")
+@Controller
 public class AuctionController {
 
     @Autowired
@@ -37,29 +36,31 @@ public class AuctionController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private AuctionFactory auctionFactory;
+
     @GetMapping("/getAuctiondetails")
-    public AuctionDTO getAuctiondetails(@RequestParam Long id) throws AuctionNotFoundException {
+    public AuctionDTO getAuctiondetails(@RequestParam Long id) throws CommonAppExceptions {
         return auctionService.getAuctiondetails(id);
+
     }
 
     @PostMapping(value="/createNewAuctions",consumes = {"multipart/form-data"})
     public AuctionDTO  createNewAuctions(@RequestPart("auction") AuctionDTO auctionDTO,
                                          @RequestPart(required = false) MultipartFile image,
-                                         @RequestParam(value = "username", required = false) String username){
+                                         @RequestParam(value = "username", required = false) String username) throws CommonAppExceptions {
         System.out.println(auctionDTO);
         System.out.println(image);
         System.out.println(username);
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new AppExceptions("Invaid user Name", HttpStatus.NOT_FOUND));
-
+                .orElseThrow(() -> new CommonAppExceptions("Invaid user Name", HttpStatus.NOT_FOUND));
 
         try{
             return auctionService.createNewAuctions(auctionDTO,user,image);
-
-        }catch (CategoryNotFoundException e){
+        }catch (CommonAppExceptions e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Invalid Category");
-        }catch (IOException e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
     }
@@ -75,14 +76,24 @@ public class AuctionController {
         return userService.getUserDetailsById(id);
     }
 
-
-    @Autowired
-    private AuctionFactory auctionFactory;
-
     @GetMapping("/getAuctionsByCategory")
     public List<AuctionDTO> getAuctionsByCategory(@RequestParam Long category) {
         return auctionFactory.getAuctionsByCategory(category);
     }
 
+    @GetMapping("/getmyAllAuctions")
+    List<AuctionDTO> getmyAllAuctions(@RequestParam(value = "username", required = false) String username) {
+        return auctionService.getmyAllAuctions(username);
+    }
 
+    @GetMapping("/getMyAllLisingSpesificOrder")
+    List<AuctionDTO> getMyAllLisingSpesificOrder(@RequestParam(value = "username", required = false) String username,
+                                                 @RequestParam(value = "order", required = false) String order){
+        return auctionFactory.getMyAllLisingSpesificOrder(username,order);
+    }
+
+    @PutMapping("/updateAuction")
+    public AuctionDTO updateAuction(@RequestBody AuctionDTO auctionDTO) throws CommonAppExceptions {
+        return auctionService.updateAuction(auctionDTO);
+    }
 }

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bid Zone Online Auction</title>
+    <link rel="icon" type="image/png" href="../styles/Screenshot 2024-05-05 105855.png">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="../js_haddle/myAuctionManage.js"></script>
+    <link rel="stylesheet" href="../styles/myAuction.css">
+    <style>
+        body {
+            background-color: #f7f9fc;
+        }
+
+        .centered-text {
+            margin-left: 500px;
+            flex: 1;
+            color: #1d7bf1;
+        }
+        .card {
+            width: 350px;
+            height: 600px;
+            overflow: hidden;
+            margin-bottom: 5px;
+        }
+        .card-img-top {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="dashboard.html">Bid Zone</a>
+    <h2 class="centered-text">Manage My Listing</h2>
+    <div class="collapse navbar-collapse"></div>
+</nav>
+<div class="bid-list mt-4" id="bid-list">
+    <h4>All Bids</h4>
+    <button type="button" id="close-bid-list" class="btn btn-danger btn-sm float-end" style="margin-top: 5px;margin-bottom: 10px;">Close</button>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Placed By</th>
+            <th>Placed At</th>
+            <th>Comment</th>
+            <th>Amount</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+<div class="form-container">
+    <h3>Update Auction Details</h3>
+    <button type="button" id="close-au-list" class="btn btn-danger btn-sm float-end" style="margin-top: 5px;margin-bottom: 10px;">Close</button>
+    <form id="auctionForm">
+        <div class="form-group">
+            <label for="auctionid">Auction ID:</label>
+            <label id="auctionid" class="form-control"></label>
+        </div>
+        <div class="form-group">
+            <label for="auctionName">Auction Name:</label>
+            <input type="text" id="auctionName" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea id="description" class="form-control"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="startingPrice">Starting Price:</label>
+            <input type="number" id="startingPrice" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="closingTime">Closing Time:</label>
+            <input type="datetime-local" id="closingTime" class="form-control">
+        </div>
+        <button type="button" class="btn btn-primary" onclick="updateAuction()">Update Auction</button>
+    </form>
+</div>
+
+<div class="auction-list">
+    <div class="form-row">
+        <div class="col-md-3 mb-2">
+            <select id="category-Oder" class="form-control">
+                <option value="all">All My Listings</option>
+                <option value="latest_first">Latest First</option>
+                <option value="oldest_first">Oldest First</option>
+                <option value="closing_later">Auctions Closing Later First</option>
+                <option value="closing_earlier">Auctions Closing Earlier First</option>
+            </select>
+        </div>
+        <div class="col-md-2 mb-2">
+            <button type="submit" class="btn btn-primary btn-block" onclick="filterMyAuctions()">Filter</button>
+        </div>
+    </div>
+    <div id="auction-list" class="row" style="margin-top: 25px;margin-left: 50px;"></div>
+</div>
+</body>
+</html>

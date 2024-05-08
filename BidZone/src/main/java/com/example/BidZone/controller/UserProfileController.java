@@ -2,13 +2,14 @@ package com.example.BidZone.controller;
 
 
 import com.example.BidZone.dto.UserProfileUpdateDTO;
-import com.example.BidZone.util.AppExceptions;
+import com.example.BidZone.util.CommonAppExceptions;
 import com.example.BidZone.util.ProfileNotFoundException;
 import com.example.BidZone.dto.UserProfileDTO;
 import com.example.BidZone.service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,13 +19,14 @@ import java.security.Principal;
 @RestController
 @CrossOrigin
 @RequestMapping("/auctionappBidZone")
+@Controller
 public class UserProfileController {
 
     @Autowired
     private ProfileService profileService;
 
     @GetMapping("/profile")
-    public ResponseEntity<?> getCurrentUserProfile(@RequestParam(value = "username", required = false) String username, Principal principal) {
+    public ResponseEntity<?> getCurrentUserProfile(@RequestParam(value = "username", required = false) String username, Principal principal) throws CommonAppExceptions {
         String effectiveUsername;
         System.out.println(3);
         if (username != null && !username.isEmpty()) {
@@ -61,7 +63,7 @@ public class UserProfileController {
         try {
             UserProfileDTO updatedProfile = profileService.updateProfile(profileUpdateRequest, image, username);
             return ResponseEntity.ok(updatedProfile);
-        } catch (AppExceptions e) {
+        } catch (CommonAppExceptions e) {
             HttpStatus status = e.getHttpStatus();
             return ResponseEntity.status(status).body(e.getMessage());
         } catch (IOException e) {

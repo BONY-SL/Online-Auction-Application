@@ -1,20 +1,19 @@
 package com.example.BidZone.service;
-
-
-import com.example.BidZone.util.AppExceptions;
-import com.example.BidZone.dto.CreateUserDTO;
-import com.example.BidZone.dto.LoginUserDTO;
-import com.example.BidZone.dto.UserDTO;
-import com.example.BidZone.dto.UserProfileDTO;
+import com.example.BidZone.dto.*;
+import com.example.BidZone.util.CommonAppExceptions;
 import com.example.BidZone.entity.User;
 import com.example.BidZone.entity.UserProfile;
 import com.example.BidZone.repostry.UserRepository;
+import com.example.BidZone.util.UserMailAndOTPSerailzeble;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.nio.CharBuffer;
 import java.util.Optional;
@@ -32,13 +31,17 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public void registerUser(final CreateUserDTO userDTO){
+
+    public void registerUser(final CreateUserDTO userDTO) throws CommonAppExceptions {
         if(userRepository.existsByUsername(userDTO.getUserName())){
-            throw new AppExceptions("Username already exists", HttpStatus.BAD_REQUEST);
+            throw new CommonAppExceptions("Username already exists", HttpStatus.BAD_REQUEST);
+        }if(userRepository.existsByEmail(userDTO.getEmail())){
+            throw new CommonAppExceptions("Email already exists", HttpStatus.BAD_REQUEST);
         }
 
         User user=new User();
         user.setUsername(userDTO.getUserName());
+        user.setEmail(userDTO.getEmail());
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 
         UserProfile userProfile=new UserProfile();
@@ -49,9 +52,20 @@ public class UserService {
 
     }
 
-    public UserDTO login(LoginUserDTO loginUserDTO) {
+    public void resetPassword(UserMailAndOTPSerailzeble userMailAndOTPSerailzeble,String password) throws CommonAppExceptions {
+
+        User user=userRepository.findByEmail(userMailAndOTPSerailzeble.getEmail())
+                .orElseThrow(()->new CommonAppExceptions("Invalid Email Address",HttpStatus.NOT_FOUND));
+
+        user.setPassword(passwordEncoder.encode(password));
+        userRepository.save(user);
+
+
+    }
+
+    public UserDTO login(LoginUserDTO loginUserDTO) throws CommonAppExceptions {
         User user = userRepository.findByUsername(loginUserDTO.getUsername())
-                .orElseThrow(() -> new AppExceptions("Unknown user", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new CommonAppExceptions("Unknown user", HttpStatus.NOT_FOUND));
 
         if (passwordEncoder.matches(CharBuffer.wrap(loginUserDTO.getPassword()), user.getPassword())) {
             UserDTO userDto = modelMapper.map(user, UserDTO.class);
@@ -60,7 +74,7 @@ public class UserService {
             System.out.println(userDto);
             return userDto;
         }
-        throw new AppExceptions("Invalid password", HttpStatus.BAD_REQUEST);
+        throw new CommonAppExceptions("Invalid password", HttpStatus.BAD_REQUEST);
     }
     public UserDTO getUserDetailsById(Long id) {
         System.out.println(id);
@@ -84,5 +98,10 @@ public class UserService {
         }
     }
 
+     public boolean checkUserEmailExists(String email) {
+        return userRepository.findByEmail(email).isPresent();
+    }
 
 }
+
+
