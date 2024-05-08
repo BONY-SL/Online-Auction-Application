@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bid Zone Online Auction</title>
+    <link rel="icon" type="image/png" href="../styles/Screenshot 2024-05-05 105855.png">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/message.css">
+    <script src="../js_haddle/manageCommunication.js"></script>
+    <style>
+        .container-fluid {
+            padding: 0 !important;
+        }
+        .sidebar {
+            background-color: #97c8f8;
+            min-height: 100vh;
+        }
+        .main-content {
+            padding: 20px;
+        }
+    </style>
+</head>
+
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="dashboard.html">Bid Zone</a>
+    <h2 class="centered-text">Communication Menage Center</h2>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block sidebar">
+            <div class="sidebar-sticky">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <button class="btn btn-dark w-100 my-2" onclick="showSection('users')">Users</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-dark w-100 my-2" onclick="showSection('sendMessage')">Send Message</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-dark w-100 my-2" onclick="showSection('viewHistory')">View Message History</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-dark w-100 my-2" onclick="showSection('receiveMessage')">View Received Messages</button>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4 main-content">
+            <div id="users" class="content-section">
+                <table class="table">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>User ID</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Description</th>
+                    </tr>
+                    </thead>
+                    <tbody id="userTableBody">
+                    </tbody>
+                </table>
+            </div>
+            <div id="sendMessage" class="content-section">
+                <div class="chat-box">
+                    <select class="form-select mb-3" aria-label="Select user">
+                        <option selected>Select user to message</option>
+                        <option value="1">User 1</option>
+                        <option value="2">User 2</option>
+                    </select>
+                    <textarea class="form-control" rows="3" placeholder="Type your message here..."></textarea>
+                    <button class="btn btn-primary mt-2" onclick="sendMessage()">Send</button>
+                </div>
+            </div>
+            <div id="viewHistory" class="content-section">
+                <div>
+                    <label for="userSelect" style="font-weight: bold; display: block; margin-bottom: 5px; color: #495057;">Select User:</label>
+
+                    <select id="userSelect" class="form-select" onchange="showMessageHistory()">
+                        <option value="" selected>Select user</option>
+                        <!-- Populate this dropdown dynamically with user data -->
+                        <option value="user1">User 1</option>
+                        <option value="user2">User 2</option>
+                        <!-- Add more users as needed -->
+                    </select>
+                </div>
+                <div id="messageHistory" class="mt-3">
+                    <!-- Message history will be dynamically added here -->
+                </div>
+            </div>
+
+            <div id="receiveMessage" class="content-section">
+                <div class="chat-box">
+                    <div class="received-messages">
+                    </div>
+                    <textarea class="form-control" rows="3" placeholder="Type your reply here..."></textarea>
+                    <button class="btn btn-primary mt-2" onclick="sendReply()">Reply</button>
+                </div>
+            </div>
+
+        </main>
+    </div>
+</div>
+</body>
+
+</html>

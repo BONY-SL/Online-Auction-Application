@@ -1,13 +1,43 @@
 let getCurrettOpt='';
+let countdownInterval;
+function startCountdown(duration) {
+    const timerDisplay = document.getElementById('countdown');
+    let timer = duration;
 
+    countdownInterval = setInterval(function () {
+        const seconds = timer % 60;
+
+        timerDisplay.textContent = seconds + "s";
+
+        if (--timer < 0) {
+            clearInterval(countdownInterval);
+            timerDisplay.textContent = "Time's up!";
+        }
+    }, 1000);
+}
+function startCountdownGetOTP(duration) {
+    const timerDisplay = document.getElementById('countdown2');
+    let timer = duration;
+
+    countdownInterval = setInterval(function () {
+        const seconds = timer % 120;
+
+        timerDisplay.textContent = seconds + "s";
+
+        if (--timer < 0) {
+            clearInterval(countdownInterval);
+            timerDisplay.textContent = "Time's up!";
+        }
+    }, 1000);
+}
 async function sendOTP() {
+
 
     const getemail = document.getElementById('email').value;
     if (!getemail || !validateEmail(getemail)) {
         alert("Please enter a valid email address.");
         return;
     }
-
     const xhr = new XMLHttpRequest();
     xhr.open("POST", "http://localhost:8080/auctionappBidZone/validateUserEmailForResetPassword", true);
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -23,6 +53,7 @@ async function sendOTP() {
                         subject: "Your OTP",
                         content: ""
                     };
+                    startCountdown(12);
                     fetch('http://localhost:8080/auctionappBidZone/sendmailToUser', {
                         method: 'POST',
                         headers: {
@@ -36,6 +67,7 @@ async function sendOTP() {
                             }
                             document.getElementById('resetForm').style.display = 'none';
                             document.getElementById('otpForm').style.display = 'block';
+                            startCountdownGetOTP(120)
                             document.getElementById('email').value='';
                             return response.json();
                         })

@@ -1,5 +1,6 @@
 package com.example.BidZone.service;
 import com.example.BidZone.dto.*;
+import com.example.BidZone.entity.Bid;
 import com.example.BidZone.util.CommonAppExceptions;
 import com.example.BidZone.entity.User;
 import com.example.BidZone.entity.UserProfile;
@@ -16,7 +17,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.nio.CharBuffer;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -100,6 +103,24 @@ public class UserService {
 
      public boolean checkUserEmailExists(String email) {
         return userRepository.findByEmail(email).isPresent();
+    }
+
+
+    public List<GetAllUserDTO> getAllUsers() {
+        return userRepository.findAll().stream().map(this::convertToDTO).collect(Collectors.toList());
+    }
+    private GetAllUserDTO convertToDTO(User user) {
+        UserProfileDTO userProfileDTO = new UserProfileDTO(
+                user.getUserProfile().getId(),
+                user.getUserProfile().getFirstName(),
+                user.getUserProfile().getLastName(),
+                user.getUserProfile().getDescription(),
+                user.getUserProfile().getProfilePictureS3URL()
+        );
+        return GetAllUserDTO.builder()
+                .id(user.getId())
+                .profile(userProfileDTO)
+                .build();
     }
 
 }

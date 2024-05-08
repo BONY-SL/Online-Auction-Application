@@ -1,8 +1,5 @@
 package com.example.BidZone.controller;
-import com.example.BidZone.dto.CreateUserDTO;
-import com.example.BidZone.dto.LoginUserDTO;
-import com.example.BidZone.dto.MailRequestDTO;
-import com.example.BidZone.dto.UserDTO;
+import com.example.BidZone.dto.*;
 import com.example.BidZone.service.EmailService;
 import com.example.BidZone.service.UserService;
 import com.example.BidZone.util.CommonAppExceptions;
@@ -16,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
+import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -155,5 +153,12 @@ public class UserController {
         }
 
     }
+
+    @GetMapping("/getAllUsers")
+    public ResponseEntity<List<GetAllUserDTO>> getAllUsers() {
+        List<GetAllUserDTO> users = userService.getAllUsers();
+        return ResponseEntity.ok(users);
+    }
+
 
 }
