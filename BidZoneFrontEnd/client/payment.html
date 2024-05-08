@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Form</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header">
+                    Auction Name: <span id="auctionName"></span>
+                    <br>Amount: <span id="amount"></span>
+                </div>
+
+                <div class="card-body">
+                    <form id="payment-form">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" placeholder="Enter email">
+                        </div>
+                        <div class="form-group">
+                            <label for="cardNumber">Card number</label>
+                            <input type="text" class="form-control" id="cardNumber" placeholder="Card number">
+                        </div>
+                        <div class="form-row">
+                            <div class="col">
+                                <label for="expiration">Expiration (MM/YY)</label>
+                                <input type="text" class="form-control" id="expiration" placeholder="MM/YY">
+                            </div>
+                            <div class="col">
+                                <label for="cvc">CVC</label>
+                                <input type="text" class="form-control" id="cvc" placeholder="CVC">
+                            </div>
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="country">Country</label>
+                            <select class="form-control" id="country">
+                                <option>Sri Lanka</option>
+                                <!-- Add other countries as needed -->
+                            </select>
+                        </div>
+                        <div class="form-group mt-4">
+                            <button type="submit" class="btn btn-primary btn-block">Pay now</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    document.getElementById('auctionName').innerText = localStorage.getItem('auctionName');
+    document.getElementById('amount').innerText = localStorage.getItem('amount');
+</script>
+</body>
+</html>

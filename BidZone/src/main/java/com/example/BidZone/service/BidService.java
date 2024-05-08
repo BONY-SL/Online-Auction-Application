@@ -100,5 +100,5 @@ public class BidService {
                         .build())
                 .collect(Collectors.toList());
     }
-    
+
 }

@@ -1,15 +1,12 @@
-// mybid.js
-
 async function fetchMyBids() {
-    const username = localStorage.getItem("username")
+    const username = localStorage.getItem("username");
     try {
         const response = await fetch(`http://localhost:8080/auctionappBidZone/myBids?username=${username}`);
         if (!response.ok) {
             throw new Error('Failed to fetch data');
         }
         const bids = await response.json();
-        console.log(bids);
-        displayBids(bids); // This line calls displayBids function
+        displayBids(bids);
     } catch (error) {
         console.error('Error fetching bids:', error);
     }
@@ -41,9 +38,18 @@ function displayBids(bids) {
             <td>${bid.amount}</td>
             <td>${bid.auctionCurrentHighestBidAmount}</td>
             <td>${formatDateTime(bid.auctionClosingTime)}</td>
+            <td>${bid.amount === bid.auctionCurrentHighestBidAmount ? `<button class="btn btn-primary make-payment-btn" onclick="showCar('${bid.auctionName}', '${bid.amount}')">Make Payment</button>` : ''}</td>
         `;
-        tableBody.appendChild(row); // This line appends the newly created row
+        tableBody.appendChild(row);
     });
+}
+
+function showCar(auctionName, amount) {
+   localStorage.setItem('auctionName', auctionName);
+   localStorage.setItem('amount', amount);
+   window.location.href = 'http://localhost:63342/Online-Auction-Application/BidZoneFrontEnd/client/payment.html';
+   // window.location.href = 'http://localhost:63342/Online-Auction-Application/BidZoneFrontEnd/client/payment1.html';
+
 }
 
 document.addEventListener('DOMContentLoaded', fetchMyBids);
