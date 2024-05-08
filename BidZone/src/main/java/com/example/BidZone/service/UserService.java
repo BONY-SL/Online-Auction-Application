@@ -59,6 +59,8 @@ public class UserService {
 
         user.setPassword(passwordEncoder.encode(password));
         userRepository.save(user);
+
+
     }
 
     public UserDTO login(LoginUserDTO loginUserDTO) throws CommonAppExceptions {

@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -135,6 +136,17 @@ public class UserController {
             UserMailAndOTPSerailzeble userMailAndOTPDeSerailzeble=otpMange.deserializeInventory(otp);
 
             userService.resetPassword(userMailAndOTPDeSerailzeble,password);
+
+            File file = new File(otp + ".ser");
+            if (file.exists()) {
+                if (file.delete()) {
+                    System.out.println("Serialized file deleted successfully");
+                } else {
+                    System.err.println("Failed to delete the serialized file");
+                }
+            } else {
+                System.err.println("Serialized file not found");
+            }
 
             return ResponseEntity.ok(userMailAndOTPDeSerailzeble);
         } catch (Exception e) {

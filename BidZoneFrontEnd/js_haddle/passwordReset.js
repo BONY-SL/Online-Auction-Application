@@ -106,8 +106,22 @@ async function resetPassword() {
     } else if (newPassword.length > 8) {
         alert('Password cannot exceed 8 characters.');
     }else{
+
         const password = newPassword.toString();
-        console.log("Password ready to be sent: ", password);
+        try {
+            const response = await fetch(`http://localhost:8080/auctionappBidZone/resetPassword?otp=${getCurrettOpt}&password=${password}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+            });
+            if (response.ok) {
+                alert('Password Update Successfully!');
+                window.location="index.html";
+            } else {
+                alert('Password Update Not Successfully!');
+            }
+        } catch (error) {
+            alert('Error: ' + error.message);
+        }
     }
 
 }

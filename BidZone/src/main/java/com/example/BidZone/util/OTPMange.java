@@ -7,7 +7,7 @@ import java.io.*;
 public class OTPMange {
 
     synchronized public void serializeInventory(String filename, UserMailAndOTPSerailzeble userMailAndOTPSerailzeble) {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename+".ser"))) {
             oos.writeObject(userMailAndOTPSerailzeble);
             System.out.println("User OTP serialized successfully.");
         } catch (IOException e) {
@@ -18,7 +18,7 @@ public class OTPMange {
     synchronized public UserMailAndOTPSerailzeble deserializeInventory(String filename) {
 
         UserMailAndOTPSerailzeble userMailAndOTPSerailzeble = new UserMailAndOTPSerailzeble();
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename+".ser"))) {
 
             userMailAndOTPSerailzeble = (UserMailAndOTPSerailzeble) ois.readObject();
 
