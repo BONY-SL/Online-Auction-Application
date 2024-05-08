@@ -95,15 +95,10 @@ public class BidService {
                         .withAuctionName(bid.getAuction() != null ? bid.getAuction().getAction_name() : null)
                         .withCurrentHighestBidAmount(BigDecimal.valueOf(bid.getAuction() != null && bid.getAuction().getCurrentHighestBid() != null ? bid.getAuction().getCurrentHighestBid().getAmount() : null))
                         .withClosingTime(bid.getAuction() != null ? bid.getAuction().getClosingTime() : null)
+                        .withComment(bid.getComment()!=null? bid.getComment():null)
                         .withAmount(BigDecimal.valueOf(bid.getAmount()))
                         .build())
                 .collect(Collectors.toList());
     }
-
-
-
-
-
-
-
+    
 }

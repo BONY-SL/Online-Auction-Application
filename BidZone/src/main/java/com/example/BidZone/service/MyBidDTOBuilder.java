@@ -1,3 +1,4 @@
+
 package com.example.BidZone.service;
 
 import com.example.BidZone.dto.MyBidDTO;
@@ -37,8 +38,12 @@ public class MyBidDTOBuilder {
         return this;
     }
 
+    public MyBidDTOBuilder withComment(String comment){
+        myBidDTO.setComment(comment);
+        return this;
+    }
+
     public MyBidDTO build() {
         return myBidDTO;
     }
 }
-
