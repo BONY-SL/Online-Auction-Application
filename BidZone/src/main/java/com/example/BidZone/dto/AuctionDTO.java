@@ -2,6 +2,7 @@ package com.example.BidZone.dto;
 
 import lombok.*;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuctionDTO {
+public class AuctionDTO implements Serializable {
 
     private Long id;
     private String action_name;

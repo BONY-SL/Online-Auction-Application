@@ -32,6 +32,9 @@ function fetchUsers() {
         .then(response => response.json())
         .then(data => {
             const tableBody = document.getElementById('userTableBody');
+            const selectElement = document.getElementById('userSelects');
+            selectElement.innerHTML = '<option selected>Select user to message</option>';
+
             tableBody.innerHTML = '';
 
             console.log(data)
@@ -43,6 +46,10 @@ function fetchUsers() {
                     <td>${user.profile.description || 'No description provided'}</td>
                 </tr>`;
                 tableBody.innerHTML += row;
+                const option = document.createElement('option');
+                option.value = user.id;
+                option.textContent = user.id;
+                selectElement.appendChild(option);
             });
         })
         .catch(error => {
@@ -53,17 +60,48 @@ function fetchUsers() {
 
 
 
-function sendMessage() {
-    const message = document.querySelector('#sendMessage textarea').value;
-    const user = document.querySelector('#sendMessage select').value;
-    console.log(`Message to send: ${message} to user ${user}`);
-    alert('Message sent!');
+async function sendMessage() {
+    const messagebody = document.querySelector('#sendMessage textarea').value;
+    const userId = document.querySelector('#sendMessage select').value;
+    const currentUserName = localStorage.getItem("username");
+
+    if (!userId || !messagebody) {
+        alert("Please select a user and enter a message.");
+        return;
+    }
+
+    const message = {
+        sentBy: { id: '', username: currentUserName },
+        sentTo: { id: userId },
+        sentAt: '',
+        content: messagebody
+    };
+
+    try {
+        const response = await fetch('http://localhost:8080/auctionappBidZone/messages/send', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(message)
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to send message');
+        }
+
+        const data = await response.json();
+        console.log('Message sent:', data);
+    } catch (error) {
+        console.error('Error sending message:', error);
+    }
 }
-// Simulated received messages data (replace this with your actual data)
+
+
 const receivedMessages = [
-    { sender: 'John', timestamp: '2024-05-08 10:00', message: 'Hello, how are you?' },
+    { sender: 'Johassaan', timestamp: '2024-05-08 10:00', message: 'Hello, how are you?' },
     { sender: 'Jane', timestamp: '2024-05-08 10:05', message: 'I\'m doing well, thank you!' },
-    // Add more messages as needed
+    { sender: 'Jane', timestamp: '2024-05-08 10:05', message: 'I\'m doing well, thank you!' },
 ];
 
 function displayReceivedMessages() {
@@ -88,6 +126,14 @@ function displayReceivedMessages() {
         receivedMessagesDiv.appendChild(messageDiv);
     });
 }
+
+
+
+
+
+
+
+
 
 // Call the function to display received messages when the page loads
 document.addEventListener('DOMContentLoaded', displayReceivedMessages);

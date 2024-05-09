@@ -41,7 +41,7 @@
                         <button class="btn btn-dark w-100 my-2" onclick="showSection('users')">Users</button>
                     </li>
                     <li class="nav-item">
-                        <button class="btn btn-dark w-100 my-2" onclick="showSection('sendMessage')">Send Message</button>
+                        <button class="btn btn-dark w-100 my-2" onclick="showSection('sendMessage')">Received Message</button>
                     </li>
                     <li class="nav-item">
                         <button class="btn btn-dark w-100 my-2" onclick="showSection('viewHistory')">View Message History</button>
@@ -70,13 +70,15 @@
             </div>
             <div id="sendMessage" class="content-section">
                 <div class="chat-box">
-                    <select class="form-select mb-3" aria-label="Select user">
+
+                    <select class="form-select mb-3" aria-label="Select user" id="userSelects">
                         <option selected>Select user to message</option>
-                        <option value="1">User 1</option>
-                        <option value="2">User 2</option>
                     </select>
+                    <button class="btn btn-primary mt-2" style="margin: 5px 5px 20px 5px">View Received Message</button>
+                    <div class="received-messages">
+                    </div>
                     <textarea class="form-control" rows="3" placeholder="Type your message here..."></textarea>
-                    <button class="btn btn-primary mt-2" onclick="sendMessage()">Send</button>
+                    <button class="btn btn-success  mt-2" onclick="sendMessage()">Reply</button>
                 </div>
             </div>
             <div id="viewHistory" class="content-section">
@@ -98,10 +100,10 @@
 
             <div id="receiveMessage" class="content-section">
                 <div class="chat-box">
-                    <div class="received-messages">
+                    <div class="received-messages2">
                     </div>
                     <textarea class="form-control" rows="3" placeholder="Type your reply here..."></textarea>
-                    <button class="btn btn-primary mt-2" onclick="sendReply()">Reply</button>
+                    <button class="btn btn-primary mt-2" onclick="sendReply()">Reply To Bidders</button>
                 </div>
             </div>
 

@@ -1,4 +1,4 @@
-package com.example.BidZone.service;
+package com.example.BidZone.util;
 import com.example.BidZone.dto.AuctionDTO;
 import com.example.BidZone.entity.Auction;
 import com.example.BidZone.repostry.AuctionRepository;

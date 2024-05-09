@@ -4,8 +4,7 @@ import com.example.BidZone.dto.ItemDTO;
 import com.example.BidZone.entity.*;
 import com.example.BidZone.repostry.AuctionRepository;
 import com.example.BidZone.repostry.CategoryRepository;
-import com.example.BidZone.util.AuctionMapper;
-import com.example.BidZone.util.CommonAppExceptions;
+import com.example.BidZone.util.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,6 +36,10 @@ public class AuctionService {
     @Autowired
     private AuctionMapper auctionMapper;
 
+    @Autowired
+    private CreateAuctionFactory createAuctionFactory;
+
+
 
     public AuctionDTO createNewAuctions(AuctionDTO auctionDTO, User user, MultipartFile image) throws CommonAppExceptions, IOException {
         Auction auction = convertToEntity(auctionDTO);
@@ -60,6 +63,10 @@ public class AuctionService {
         }
 
         final Auction savedAuction = auctionRepository.save(auction);
+
+        createAuctionFactory.removeAuction();
+        createAuctionFactory.addnewAuction(auctionDTO);
+        System.out.println(createAuctionFactory.notifytoUser());
         return auctionMapper.convertToDto(savedAuction);
     }
 

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
@@ -12,13 +13,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "chat_message")
-public class UserMessage {
+public class UserMessage implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false, targetEntity = User.class)
+    @ManyToOne(optional = false, targetEntity = User.class,fetch = FetchType.EAGER)
     private User sentBy;
 
     @ManyToOne(optional = false, targetEntity = User.class)

@@ -41,7 +41,7 @@ public class BidService {
 
 
         if (auction.getIsClosed()) {
-            throw new CommonAppExceptions("Invaid user Name", HttpStatus.NOT_FOUND);
+            throw new CommonAppExceptions("Bid Is Closed", HttpStatus.NOT_FOUND);
         }
 
         final User user = userRepository.findByUsername(userName)
