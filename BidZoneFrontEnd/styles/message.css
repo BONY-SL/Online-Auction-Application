@@ -1,0 +1,166 @@
+.navbar {
+
+}
+.centered-text {
+    margin-left: 400px;
+    flex: 1;
+    color: #1d7bf1;
+}
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.sidebar {
+    background-color: #3b99e8;
+    color: #61d6ff;
+    min-height: 100vh;
+    padding: 20px;
+}
+.nav-link {
+    color: #525252;
+    margin: 10px 0;
+}
+.nav-link:hover {
+    background-color: #495057;
+}
+.main-content {
+    background-color: #f8f9fa;
+    padding: 20px;
+    height: 100vh;
+    overflow: auto;
+}
+.content-section {
+    display: none;
+}
+.btn-dark {
+    background-color: #97c8f8;
+    color: #444343;
+    border: none;
+}
+
+.btn-dark:hover {
+    background-color: #525252;
+}
+.btn.active, .btn:active {
+    background-color: #007bff;
+    color: #525252;
+}
+.table {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.table th, .table td {
+    text-align: left;
+    padding: 8px;
+}
+#sendMessage {
+    padding: 20px;
+    background-color: #f8f9fa;
+}
+
+.chat-box {
+    max-width: 500px; /* Set a max-width for the chat box */
+    margin: auto; /* Center align the chat box */
+    background: white; /* White background for the chat box */
+    padding: 20px; /* Padding around the inner content */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+    border-radius: 8px; /* Rounded corners */
+}
+
+.chat-box .form-select,
+.chat-box textarea {
+    width: 100%; /* Full width */
+    margin-bottom: 1rem; /* Spacing between elements */
+}
+
+.chat-box button {
+    width: 100%; /* Full width */
+}
+#receiveMessage {
+    padding: 20px;
+    background-color: #f8f9fa;
+}
+
+.received-messages {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.chat-box {
+    max-width: 500px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+
+.chat-box textarea {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.chat-box button {
+    width: 100%;
+}
+.received-messages2 {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.message {
+    margin-bottom: 10px;
+}
+
+.sender-info {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.message-content {
+    word-wrap: break-word;
+}
+
+/* Style for the message history section */
+#viewHistory {
+    padding: 20px;
+    background-color: #f8f9fa;
+}
+
+/* Style for the dropdown menu */
+#userSelect {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    background-color: #868686;
+    color: #495057;
+}
+
+/* Style for the message history container */
+#messageHistory {
+    margin-top: 10px;
+}
+
+/* Style for individual messages */
+.message {
+    background-color: #e9ecef;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+/* Style for message timestamp */
+.message-timestamp {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+/* Style for message content */
+.message-content {
+    margin-top: 5px;
+}

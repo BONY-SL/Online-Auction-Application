@@ -57,13 +57,21 @@
         }
         .sidenav {
             position: absolute;
-            top: 65px;
+            top: 60px;
             left: 0;
             padding: 20px;
-            background-color: #f8f9fa;
+            background-color: #97c8f8;
             border-right: 1px solid #dee2e6;
-            width: 200px;
+            width: 242px;
             height: calc(100% - 60px);
+        }
+
+        .nav-link {
+            color: #fff;
+            margin: 10px 0;
+        }
+        .nav-link:hover {
+            background-color: #495057;
         }
 
         .sidenav a {
@@ -84,7 +92,7 @@
         }
 
         .auction-list {
-            margin-left: 220px;
+            margin-left: 250px;
             padding: 20px;
         }
 
@@ -124,14 +132,14 @@
     </nav>
     <div class="sidenav" style="position: fixed">
         <h6>Quick Actions</h6>
-        <a href="createlistning.html">Create Listing</a>
-        <a id="myListingLink" href="myAuctions.html">My Listing</a>
-        <a href="mybid.html">My Bids</a>
+        <a class="nav-link" href="createlistning.html">Create Listing</a>
+        <a class="nav-link" id="myListingLink" href="myAuctions.html">My Listing</a>
+        <a class="nav-link" href="mybid.html">My Bids</a>
         <hr>
         <h6>Account</h6>
-        <a id="myprofileLink" href="profile.html">Manage Profile</a>
-        <a href="#">Messages</a>
-        <p onclick="addNewCategoryvisibleDive()">Add Category</p>
+        <a class="nav-link" id="myprofileLink" href="profile.html">Manage Profile</a>
+        <a class="nav-link" href="message.html">Messages</a>
+        <p class="nav-link" onclick="addNewCategoryvisibleDive()">Add Category</p>
     </div>
 
     <div id="popup-overlay" class="popup-overlay"></div>

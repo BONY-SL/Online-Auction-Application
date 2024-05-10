@@ -1,8 +1,11 @@
 package com.example.BidZone;
 
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.http.HttpMethod;
+import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -14,14 +17,25 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity
 public class SecurityConfig {
 
+
+    @Bean
+    public FilterRegistrationBean<OpenEntityManagerInViewFilter> openEntityManagerInViewFilter() {
+        FilterRegistrationBean<OpenEntityManagerInViewFilter> registrationBean = new FilterRegistrationBean<>();
+        OpenEntityManagerInViewFilter filter = new OpenEntityManagerInViewFilter();
+        registrationBean.setFilter(filter);
+        registrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE);
+        return registrationBean;
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/auctionappBidZone/registerUser", "/auctionappBidZone/userlogin","/auctionappBidZone/addcategories","/auctionappBidZone/createNewAuctions","/auctionappBidZone/bidForAuctionItem","/auctionappBidZone/validateUserEmailForResetPassword","/auctionappBidZone/sendmailToUser","/auctionappBidZone/verifyGetOtp").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auctionappBidZone/registerUser", "/auctionappBidZone/userlogin","/auctionappBidZone/addcategories","/auctionappBidZone/createNewAuctions","/auctionappBidZone/bidForAuctionItem","/auctionappBidZone/validateUserEmailForResetPassword","/auctionappBidZone/sendmailToUser","/auctionappBidZone/verifyGetOtp","/auctionappBidZone/messages/send").permitAll()
                         .requestMatchers(HttpMethod.GET, "/auctionappBidZone/profile", "/auctionappBidZone/profile/{profileId}","/auctionappBidZone/categories","/auctionappBidZone/getAllauctions","/auctionappBidZone/getAuctiondetails","/auctionappBidZone/getUserDetails"
-                        ,"/auctionappBidZone/getAuctionsByCategory","/auctionappBidZone/getTheAllBidsUnderTheAuction","/auctionappBidZone/getmyAllAuctions","/auctionappBidZone/getMyAllLisingSpesificOrder").permitAll()
+                        ,"/auctionappBidZone/getAuctionsByCategory","/auctionappBidZone/getTheAllBidsUnderTheAuction","/auctionappBidZone/getmyAllAuctions","/auctionappBidZone/getMyAllLisingSpesificOrder","/auctionappBidZone/getAllUsers","/auctionappBidZone/getNotifyMessageAddNewAuction"
+                        ,"/auctionappBidZone/messages/response").permitAll()
                         .requestMatchers(HttpMethod.PATCH,"/auctionappBidZone/profile").permitAll()
                         .requestMatchers(HttpMethod.PUT,"/auctionappBidZone/updateAuction","/auctionappBidZone/resetPassword").permitAll()
                         .requestMatchers("/uploads/**").permitAll()
