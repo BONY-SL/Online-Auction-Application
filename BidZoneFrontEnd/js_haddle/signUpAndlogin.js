@@ -91,7 +91,6 @@ function validateEmail(email) {
       .then( data => {
         console.log('User data:', data);
         localStorage.setItem('username', data.username);
-        localStorage.setItem('userdata',data)
         form.reset();
         window.location.href = 'dashboard.html';
       })

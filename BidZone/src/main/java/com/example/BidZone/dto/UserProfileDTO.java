@@ -1,17 +1,18 @@
 package com.example.BidZone.dto;
 
 
+import com.example.BidZone.entity.UserProfile;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
+import java.io.Serializable;
 
 @Data
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserProfileDTO {
+@AllArgsConstructor
+public class UserProfileDTO implements Serializable {
 
     private Long id;
     @NotNull
@@ -20,4 +21,14 @@ public class UserProfileDTO {
     private String lastName;
     private String description;
     private String profilePictureURL;
+
+    public UserProfile toEntity() {
+        UserProfile userProfile = new UserProfile();
+        userProfile.setId(this.id);
+        userProfile.setFirstName(this.firstName);
+        userProfile.setLastName(this.lastName);
+        userProfile.setDescription(this.description);
+        userProfile.setProfilePictureS3URL(this.profilePictureURL);
+        return userProfile;
+    }
 }
