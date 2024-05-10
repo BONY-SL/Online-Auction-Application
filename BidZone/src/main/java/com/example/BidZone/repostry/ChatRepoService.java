@@ -2,6 +2,7 @@ package com.example.BidZone.repostry;
 
 import com.example.BidZone.dto.MessageDTO;
 import com.example.BidZone.entity.User;
+import com.example.BidZone.util.CommonAppExceptions;
 import org.springframework.stereotype.Service;
 
 import java.rmi.Remote;
@@ -15,7 +16,7 @@ public interface ChatRepoService extends Remote {
 
     void sendMessage(MessageDTO message) throws RemoteException;
 
-    MessageDTO responseMessage() throws RemoteException;
+    MessageDTO getMessageResponse(Long id,String username) throws RemoteException, CommonAppExceptions;
 
     List<MessageDTO> retrieveMessages(User sentBy, User sentTo) throws RemoteException;
 }

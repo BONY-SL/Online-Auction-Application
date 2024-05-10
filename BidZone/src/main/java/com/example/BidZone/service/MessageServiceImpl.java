@@ -7,14 +7,13 @@ import com.example.BidZone.repostry.MessageRepostory;
 import com.example.BidZone.repostry.UserRepository;
 import com.example.BidZone.util.CommonAppExceptions;
 import com.example.BidZone.util.RealTimeMessageManage;
+import org.hibernate.Hibernate;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -64,10 +63,30 @@ public class MessageServiceImpl extends UnicastRemoteObject implements ChatRepoS
     }
 
     @Override
-    public MessageDTO responseMessage() throws RemoteException {
+    @Transactional
+    public MessageDTO getMessageResponse(Long id, String username) throws RemoteException, CommonAppExceptions {
+        MessageDTO messageDTO = realTimeMessageManage.deserializeMesageDTOInventory("message.ser");
 
-        return realTimeMessageManage.deserializeMesageDTOInventory("message.ser");
+        User SndBy = userRepository.findById(id)
+                .orElseThrow(() -> new CommonAppExceptions("User Not Found", HttpStatus.NOT_FOUND));
+        Hibernate.initialize(SndBy.getUserProfile());
+        User sendToUser = userRepository.findByUsernameWithProfile(username)
+                .orElseThrow(() -> new CommonAppExceptions("User Not Found", HttpStatus.NOT_FOUND));
+        Hibernate.initialize(sendToUser.getUserProfile());
+
+        messageDTO.getSentBy().setId(sendToUser.getId());
+        messageDTO.setSentTo(SndBy.toDTO());
+
+        System.out.println(sendToUser.getUserProfile().toDTO());
+
+        if (messageDTO.getSentTo().getId().equals(id) && messageDTO.getSentBy().getId().equals(sendToUser.getId())) {
+            System.out.println(1);
+            return messageDTO;
+        } else {
+            throw new CommonAppExceptions("Message does not match user criteria", HttpStatus.NOT_FOUND);
+        }
     }
+
 
     @Override
     public List<MessageDTO> retrieveMessages(User sentBy, User sentTo) throws RemoteException {

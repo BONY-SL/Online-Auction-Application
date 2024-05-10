@@ -96,47 +96,42 @@ async function sendMessage() {
         console.error('Error sending message:', error);
     }
 }
-
-
-const receivedMessages = [
-    { sender: 'Johassaan', timestamp: '2024-05-08 10:00', message: 'Hello, how are you?' },
-    { sender: 'Jane', timestamp: '2024-05-08 10:05', message: 'I\'m doing well, thank you!' },
-    { sender: 'Jane', timestamp: '2024-05-08 10:05', message: 'I\'m doing well, thank you!' },
-];
-
-function displayReceivedMessages() {
+async function displayReceivedMessages() {
     const receivedMessagesDiv = document.querySelector('.received-messages');
-    receivedMessagesDiv.innerHTML = ''; // Clear previous messages
+    receivedMessagesDiv.innerHTML = '';
+    const userIdgetMessage = document.querySelector('#userSelects').value;
+    const username = localStorage.getItem("username");
 
-    receivedMessages.forEach(message => {
-        const messageDiv = document.createElement('div');
-        messageDiv.classList.add('message');
+    const id=parseInt(userIdgetMessage);
 
-        const senderInfo = document.createElement('span');
-        senderInfo.classList.add('sender-info');
-        senderInfo.textContent = `${message.sender} (${message.timestamp}):`;
+    if (!userIdgetMessage || userIdgetMessage === 'Select user to message') {
+        receivedMessagesDiv.textContent = "Please select a user to view messages.";
+        return;
+    }
 
-        const messageContent = document.createElement('span');
-        messageContent.classList.add('message-content');
-        messageContent.textContent = message.message;
-
-        messageDiv.appendChild(senderInfo);
-        messageDiv.appendChild(messageContent);
-
-        receivedMessagesDiv.appendChild(messageDiv);
-    });
+    try {
+        const response = await fetch(`http://localhost:8080/auctionappBidZone/messages/response?userId=${id}&username=${username}`);
+        if (!response.ok) {
+            const errorDetails = await response.text();
+            throw new Error(`Failed to fetch messages: ${response.status} ${response.statusText} - ${errorDetails}`);
+        }
+        const data = await response.json();
+        if (data && data.content) {
+            const messageContent = data.content;
+            const messageElement = document.createElement('div');
+            messageElement.textContent = messageContent;
+            receivedMessagesDiv.appendChild(messageElement);
+        } else {
+            receivedMessagesDiv.textContent = "No messages found for the selected user.";
+        }
+    } catch (error) {
+        console.error('Error fetching messages:', error);
+        receivedMessagesDiv.textContent = `An error occurred while fetching messages: ${error.message}`;
+    }
 }
 
 
 
-
-
-
-
-
-
-// Call the function to display received messages when the page loads
-document.addEventListener('DOMContentLoaded', displayReceivedMessages);
 
 // Function to handle sending a reply (similar to the previous example)
 function sendReply() {

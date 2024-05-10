@@ -43,8 +43,14 @@ public class MessageController {
     }
 
     @GetMapping("/messages/response")
-    public MessageDTO response() throws RemoteException {
-        return chatService.responseMessage();
+    @ResponseBody
+    public ResponseEntity<MessageDTO> getMessageResponse(@RequestParam(value = "userId", required = false) Long userId,
+                                                         @RequestParam(value = "username", required = false) String username)
+            throws RemoteException, CommonAppExceptions {
+        MessageDTO messageDTO = chatService.getMessageResponse(userId, username);
+        return messageDTO != null ? ResponseEntity.ok(messageDTO) : ResponseEntity.notFound().build();
     }
+
+
 
 }
