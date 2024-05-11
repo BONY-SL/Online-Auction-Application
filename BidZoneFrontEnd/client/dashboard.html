@@ -8,12 +8,14 @@
     <link rel="icon" type="image/png" href="../styles/Screenshot 2024-05-05 105855.png">
     <link rel="stylesheet" href="../styles/dashboardStyle.css">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="../js_haddle/manageCategory.js"></script>
     <script src="../js_haddle/getAuctions.js"></script>
     <script src="../js_haddle/filterAuctions.js"></script>
+    <script src="../js_haddle/dashboardNotificationManage.js"></script>
     <script>
         function gotoLogin() {
             if (confirm("Are you sure you want to log out?")) {
@@ -100,8 +102,8 @@
             margin-bottom: 20px;
         }
         .card {
-            width: 350px;
-            height: 600px;
+            width: 360px;
+            height: 650px;
             overflow: hidden;
             margin-bottom: 5px;
         }
@@ -115,6 +117,50 @@
             flex: 1;
             color: #1d7bf1;
         }
+        .notification-icon {
+            position: relative;
+            margin-right: 150px;
+        }
+
+        .notification-icon .badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            min-width: 20px;
+            padding: 3px 6px;
+            font-size: 12px;
+            border-radius: 50%;
+        }
+        .notification-card {
+            display: none;
+            position: absolute;
+            top: 60px;
+            right: 10px;
+            z-index: 1001;
+        }
+        #newListingCard {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 360px;
+            background-color: white;
+            border: 1px solid #ccc;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .list-group-item {
+            padding: 10px 10px;
+            border: none;
+        }
+
+        .btn-primary {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+
     </style>
 </head>
 
@@ -122,10 +168,10 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="position: fixed;z-index: 1000;width: 100%">
         <a class="navbar-brand" >Bid Zone</a>
         <h2 class="centered-text">DashBoard</h2>
-        <form class="form-inline ml-auto">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search By Keyword" aria-label="Search">
-            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
-        </form>
+        <div class="notification-icon" id="notificationIcon">
+            <label class="noty" onclick="showNewStarListing()">New Listing</label>
+        </div>
+
 		<div>
             <button class="logout" onclick="gotoLogin()">LogOut</button>
         </div>
@@ -140,9 +186,25 @@
         <a class="nav-link" id="myprofileLink" href="profile.html">Manage Profile</a>
         <a class="nav-link" href="message.html">Messages</a>
         <p class="nav-link" onclick="addNewCategoryvisibleDive()">Add Category</p>
-        <a id="myprofileLink1" href="paymentHistory.html">Payment History</a>
-
+        <a id="myprofileLink1" href="PaymentHistory.html">Payment History</a>
     </div>
+
+    <div id="newListingCard" style="display:none;">
+        <div class="card">
+            <img id="auctionImage" src="" alt="Auction Image" class="card-img-top">
+            <div class="card-body">
+                <h5 id="auctionName" class="card-title"></h5>
+                <p id="auctionDescription" class="card-text"></p>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Auction ID: <span id="auctionId"></span></li>
+                    <li class="list-group-item">Starting Price: <span id="startingPrice"></span></li>
+                    <li class="list-group-item">Closing Time: <span id="closingTime"></span></li>
+                </ul>
+                <button onclick="hideNewListing()" class="btn btn-primary">Go Find</button>
+            </div>
+        </div>
+    </div>
+
 
     <div id="popup-overlay" class="popup-overlay"></div>
     <div id="popup-form" class="popup-form">
@@ -155,10 +217,10 @@
     </div>
 
     <div class="auction-list">
-        <h2>Featured Auctions</h2>
+        <h2 style="margin-top: 60px;text-align: center">Featured Auctions</h2>
         <div class="form-row">
             <div class="col-md-3 mb-2">
-                <select id="category-select" class="form-control">
+                <select id="category-select" class="form-control" style="margin-top: 10px">
                     <option value="all">All Categories</option>
                 </select>
             </div>
@@ -166,7 +228,7 @@
                 <button type="submit" class="btn btn-primary btn-block" onclick="filterCategories()">Filter</button>
             </div>
         </div>
-        <div id="auction-list" class="row" style="margin-top: 20px"></div>
+        <div id="auction-list" class="row" style="margin-top: 30px"></div>
     </div>
 
 </body>

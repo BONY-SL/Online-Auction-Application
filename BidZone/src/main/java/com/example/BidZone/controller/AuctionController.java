@@ -107,10 +107,8 @@ public class AuctionController {
     }
 
     @GetMapping("/getNotifyMessageAddNewAuction")
-    public ResponseEntity<Map<String, String>> getNotifyMessageAddNewAuction(){
-        Map<String, String> response = new HashMap<>();
-        response.put("message", auctionNotifyInfo.andNewAuctionNotification());
-        return ResponseEntity.ok(response);
+    public ResponseEntity<AuctionDTO>  getNotifyMessageAddNewAuction(){
+        return ResponseEntity.ok(auctionNotifyInfo.andNewAuctionNotification());
     }
 
 

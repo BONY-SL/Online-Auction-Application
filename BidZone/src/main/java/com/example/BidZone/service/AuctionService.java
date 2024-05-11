@@ -1,5 +1,6 @@
 package com.example.BidZone.service;
 import com.example.BidZone.dto.AuctionDTO;
+import com.example.BidZone.dto.CategoryDTO;
 import com.example.BidZone.dto.ItemDTO;
 import com.example.BidZone.entity.*;
 import com.example.BidZone.repostry.AuctionRepository;
@@ -42,6 +43,7 @@ public class AuctionService {
 
 
     public AuctionDTO createNewAuctions(AuctionDTO auctionDTO, User user, MultipartFile image) throws CommonAppExceptions, IOException {
+
         Auction auction = convertToEntity(auctionDTO);
 
         ItemDTO itemDto = auctionDTO.getItem();
@@ -56,21 +58,33 @@ public class AuctionService {
         item.setStartingPrice(itemDto.getStartingPrice());
         auction.setName(item);
         auction.setCreatedBy(user);
+        item.setCategory(category.get());
+
+
 
         if (image != null && !image.isEmpty()) {
             final String imagePath = saveimageService.saveFileToDisk(image, user.getUsername());
             auction.setImage(imagePath);
+            auctionDTO.setImage(imagePath);
         }
 
         final Auction savedAuction = auctionRepository.save(auction);
 
+        itemDto.setAuctionId(savedAuction.getId());
+        auctionDTO.setId(savedAuction.getId());
+        auctionDTO.setItem(itemDto);
+        itemDto.setId(savedAuction.getId());
+        auctionDTO.setCreatedById(user.getId());
+
         createAuctionFactory.removeAuction();
+
         createAuctionFactory.addnewAuction(auctionDTO);
-        System.out.println(createAuctionFactory.notifytoUser());
+
         return auctionMapper.convertToDto(savedAuction);
     }
 
     private Auction convertToEntity(final AuctionDTO auctionDTO) {
+
         return modelMapper.map(auctionDTO, Auction.class);
     }
     public List<AuctionDTO> getAllAuctions() {

@@ -13,6 +13,20 @@
     transition: background-color 0.3s ease;
 }
 
+.noty {
+    width: 80px;
+    background-color: #ec3c3c;
+    border: #ec3c3c;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    margin-left: 50px;
+    border-radius: 80px;
+    transition: background-color 0.3s ease;
+}
+
 .logout:hover {
     background-color: #2f71d3; /* Darker red background on hover */
 }
