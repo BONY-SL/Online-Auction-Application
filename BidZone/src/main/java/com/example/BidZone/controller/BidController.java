@@ -2,6 +2,7 @@ package com.example.BidZone.controller;
 import com.example.BidZone.dto.BidDTO;
 import com.example.BidZone.dto.BidRequestDTO;
 import com.example.BidZone.dto.BidToItemDTO;
+import com.example.BidZone.dto.MyBidDTO;
 import com.example.BidZone.service.BidService;
 import com.example.BidZone.util.*;
 import lombok.Getter;
@@ -10,6 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import java.security.Principal;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -40,6 +45,15 @@ public class BidController {
     public List<BidDTO> getTheAllBidsUnderTheAuction(@RequestParam long auctionId){
         return bidService.getTheAllBidsUnderTheAuction(auctionId);
     }
+
+    @GetMapping("/myBids")
+    public List<MyBidDTO> findBidsPlacedByUser(@RequestParam(value = "username", required = false) String username) {
+        System.out.println(username);
+
+        return bidService.findBidsPlacedByUser(username);
+    }
+
+
 
 
     @ExceptionHandler(CommonAppExceptions.class)

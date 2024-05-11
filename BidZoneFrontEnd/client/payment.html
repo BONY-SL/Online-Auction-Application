@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Form</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Custom styles */
+        body {
+            background-color: #f8f9fa;
+        }
+        .card {
+            border-radius: 10px;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+        }
+        .card-header {
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 10px 10px 0 0;
+        }
+        .card-body {
+            padding: 20px;
+        }
+        .form-group label {
+            font-weight: bold;
+        }
+        .form-control {
+            border-radius: 5px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="http://localhost:63342/back/BidZoneFrontEnd/client/mybid.html">Bid Zone</a>
+    <div class="collapse navbar-collapse">
+    </div>
+</nav>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="text-center">TRANSFER AND PAYMENT DETAILS</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label for="auctionName">Auction Name:</label>
+                            <span id="auctionName"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="amount">Amount:</label>
+                            <span id="amount"></span>
+                        </div>
+                    </div>
+                    <form id="payment-form">
+                        <div class="form-group">
+                            <label for="address">Address:</label>
+                            <textarea class="form-control" id="address" placeholder="Enter your address" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="phonenumber">Phone number:</label>
+                            <input type="number" class="form-control" id="phonenumber" placeholder="Enter your phone number" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="paymentMethod">Select payment method:</label>
+                            <select name="paymentMethod" id="paymentMethod" class="form-control" onchange="toggleCardInput()" required>
+                                <option value="cash">Cash on delivery</option>
+                                <option value="card">Card</option>
+                            </select>
+                        </div>
+                        <div class="card" id="card2" style="display: none;">
+                            <div class="card-header">
+                                <h4 class="text-center">Enter Card Details</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="email">Email:</label>
+                                    <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="cardNumber">Card number:</label>
+                                    <input type="text" class="form-control" id="cardNumber" placeholder="Enter your card number" required>
+                                </div>
+                                <div class="form-row">
+                                    <div class="col">
+                                        <label for="expiration">Expiration (MM/YY):</label>
+                                        <input type="text" class="form-control" id="expiration" placeholder="MM/YY" required>
+                                    </div>
+                                    <div class="col">
+                                        <label for="cvc">CVC:</label>
+                                        <input type="text" class="form-control" id="cvc" placeholder="Enter your CVC" required>
+                                    </div>
+                                </div>
+                                <div class="form-group mt-3">
+                                    <label for="country">Country:</label>
+                                    <input type="text" class="form-control" id="country" placeholder="Enter your country" required>
+
+                                    <!-- Add other countries as needed -->
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group mt-4">
+                            <button type="button" class="btn btn-primary btn-block" onclick="submitForm()">Conform</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    // Retrieve auctionName and amount from localStorage
+    var auctionName = localStorage.getItem('auctionName');
+    var amount = localStorage.getItem('amount');
+
+    // Retrieve username from localStorage
+    var username = localStorage.getItem('username');
+    var auctionId = localStorage.getItem('auctionId');
+
+
+
+    console.log(username);
+    console.log(auctionId);
+
+    // Set the text in the HTML elements
+    document.getElementById('auctionName').innerText = auctionName;
+    document.getElementById('amount').innerText = amount;
+
+
+    // Function to toggle card input based on payment method selection
+    function toggleCardInput() {
+        var paymentMethod = document.getElementById('paymentMethod').value;
+        var card2 = document.getElementById('card2');
+
+        card2.style.display = paymentMethod === 'card' ? 'block' : 'none';
+    }
+
+    // Function to submit the form data
+    // Function to submit the form data
+    function submitForm() {
+        // Get current date
+        var currentDate = new Date().toISOString();
+
+        // Get form data
+        var address = document.getElementById('address').value.trim();
+        var phoneNumber = document.getElementById('phonenumber').value.trim();
+        var paymentMethod = document.getElementById('paymentMethod').value;
+        var email = document.getElementById('email').value.trim();
+        var cardNumber = document.getElementById('cardNumber').value.trim();
+        var expiration = document.getElementById('expiration').value.trim();
+        var cvc = document.getElementById('cvc').value.trim();
+        var country = document.getElementById('country').value.trim();
+        var pmethord = document.getElementById('paymentMethod').value.trim();
+
+        // Validation checks
+        if (address === '' || phoneNumber === '' || pmethord === '') {
+            showAlert('Please fill out all required fields.', 'danger');
+            return; // Stop further execution if validation fails
+        }
+
+        if (pmethord === 'card') {
+            if (email === '' || cardNumber === '' || expiration === '' || cvc === '' || country === '') {
+                showAlert('Please fill out all card details.', 'danger');
+                return; // Stop further execution if validation fails
+            }
+        }
+
+        // Create an object to hold the form data
+        var formData = {
+            auction_name: auctionName,
+            amount: parseFloat(amount), // Convert amount to a number if needed
+            addresss: address,
+            pnumber: phoneNumber,
+            paymentmethord: paymentMethod,
+            payment_date: currentDate, // Assuming currentDate is already in ISO format
+            username: username,
+            auctionid: auctionId
+        };
+
+        // Log the form data to the console
+        console.log('Form Data:', formData);
+
+        // Send form data to the API endpoint using fetch
+        fetch('http://localhost:8080/auctionappBidZone/savepayment', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Response from server:', data);
+                showAlert('Payment is successful.', 'success');
+                clearFields(); // Clear all fields after successful submission
+                // Handle the response as needed
+            })
+            .catch(error => {
+                console.error('Error sending data to the server:', error);
+                showAlert('Error sending payment data.', 'danger');
+                // Handle any errors that occur during the fetch
+            });
+    }
+
+    // Function to clear all form fields
+    function clearFields() {
+        document.getElementById('address').value = '';
+        document.getElementById('phonenumber').value = '';
+        document.getElementById('paymentMethod').value = 'cash'; // Assuming default payment method is 'cash'
+        document.getElementById('email').value = '';
+        document.getElementById('cardNumber').value = '';
+        document.getElementById('expiration').value = '';
+        document.getElementById('cvc').value = '';
+        document.getElementById('country').value = '';
+    }
+
+    // Function to show Bootstrap alert
+    function showAlert(message, type) {
+        var alertElement = document.createElement('div');
+        alertElement.classList.add('alert', 'alert-' + type);
+        alertElement.setAttribute('role', 'alert');
+        alertElement.innerText = message;
+
+        var container = document.querySelector('.container');
+        container.insertBefore(alertElement, container.firstChild);
+
+        setTimeout(function () {
+            alertElement.remove();
+        }, 5000);
+    }
+
+
+
+</script>
+</body>
+</html>
+

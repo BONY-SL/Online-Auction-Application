@@ -1,6 +1,7 @@
 package com.example.BidZone.service;
 
 import com.example.BidZone.dto.BidDTO;
+import com.example.BidZone.dto.MyBidDTO;
 import com.example.BidZone.entity.Auction;
 import com.example.BidZone.entity.Bid;
 import com.example.BidZone.entity.BiddingItem;
@@ -9,13 +10,16 @@ import com.example.BidZone.repostry.AuctionRepository;
 import com.example.BidZone.repostry.BidRepository;
 import com.example.BidZone.repostry.UserRepository;
 import com.example.BidZone.util.*;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -30,6 +34,9 @@ public class BidService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
 
     @Transactional(isolation = Isolation.SERIALIZABLE)
@@ -88,6 +95,21 @@ public class BidService {
         bidDTO.setComment(bid.getComment());
         return bidDTO;
 
+    }
+
+    public List<MyBidDTO> findBidsPlacedByUser(final String userName) {
+        List<Bid> bids = bidRepository.findBidByPlacedByUsernameOrderByPlacedAtDesc(userName);
+
+        return bids.stream()
+                .map(bid -> new MyBidDTOBuilder()
+                        .withAuctionId(bid.getAuction() != null ? bid.getAuction().getId() : null)
+                        .withAuctionName(bid.getAuction() != null ? bid.getAuction().getAction_name() : null)
+                        .withCurrentHighestBidAmount(BigDecimal.valueOf(bid.getAuction() != null && bid.getAuction().getCurrentHighestBid() != null ? bid.getAuction().getCurrentHighestBid().getAmount() : null))
+                        .withClosingTime(bid.getAuction() != null ? bid.getAuction().getClosingTime() : null)
+                        .withComment(bid.getComment()!=null? bid.getComment():null)
+                        .withAmount(BigDecimal.valueOf(bid.getAmount()))
+                        .build())
+                .collect(Collectors.toList());
     }
 
 }
