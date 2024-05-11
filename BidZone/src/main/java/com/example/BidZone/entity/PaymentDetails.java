@@ -36,7 +36,7 @@ public class PaymentDetails {
     private String username;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "auction_id",referencedColumnName = "id")
+    @JoinColumn(referencedColumnName = "id")
     private Auction auction;
 
 }
