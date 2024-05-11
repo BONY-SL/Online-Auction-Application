@@ -1,21 +1,12 @@
 package com.example.BidZone.entity;
-
-
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
 import java.util.Date;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
-@Getter
 @Setter
-@Component
-
-
+@Getter
+@NoArgsConstructor
+@ToString
 @Entity(name="paymentDetails")
 public class PaymentDetails {
 
@@ -44,8 +35,8 @@ public class PaymentDetails {
     @Column(nullable = false)
     private String username;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "auction_id",referencedColumnName = "id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "auction_id", referencedColumnName = "id")
     private Auction auction;
 
 }
