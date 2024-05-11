@@ -11,5 +11,5 @@ import java.util.List;
 @Repository
 public interface MessageRepostory extends CrudRepository<UserMessage, Long> {
 
-    List<UserMessage> findChatMessageBySentByAndSentTo(User sentBy, User sentTo);
+    List<UserMessage> findChatMessageBySentByIdAndSentToId(Long sentBy, Long sentTo);
 }

@@ -18,5 +18,5 @@ public interface ChatRepoService extends Remote {
 
     MessageDTO getMessageResponse(Long id,String username) throws RemoteException, CommonAppExceptions;
 
-    List<MessageDTO> retrieveMessages(User sentBy, User sentTo) throws RemoteException;
+    List<MessageDTO> retrieveMessages(Long id, String username) throws RemoteException, CommonAppExceptions;
 }

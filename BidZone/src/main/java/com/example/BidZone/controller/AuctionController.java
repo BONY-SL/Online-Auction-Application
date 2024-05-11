@@ -113,4 +113,10 @@ public class AuctionController {
         return ResponseEntity.ok(response);
     }
 
+
+    @PatchMapping("/deleteAuction")
+    public void deleteAuction(@RequestParam(value = "auctionId", required = false) Long auctionId) throws CommonAppExceptions {
+        auctionService.deleteAuction(auctionId);
+    }
+
 }

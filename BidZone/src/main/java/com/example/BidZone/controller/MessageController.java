@@ -15,6 +15,7 @@ import java.net.InetAddress;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -53,4 +54,11 @@ public class MessageController {
 
 
 
+    @GetMapping("/getUsersMessageHistory")
+    public  List<MessageDTO> getUsersMessageHistory(@RequestParam(value = "userId", required = false) Long userId,
+                                                                    @RequestParam(value = "username", required = false) String username) throws RemoteException, CommonAppExceptions {
+        return chatService.retrieveMessages(userId, username);
+    }
+
 }
+

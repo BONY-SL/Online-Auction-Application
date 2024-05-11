@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -87,16 +88,34 @@ public class MessageServiceImpl extends UnicastRemoteObject implements ChatRepoS
         }
     }
 
-
     @Override
-    public List<MessageDTO> retrieveMessages(User sentBy, User sentTo) throws RemoteException {
-        List<UserMessage> messages = messageRepository.findChatMessageBySentByAndSentTo(sentBy, sentTo);
-        return messages.stream().map(msg -> new MessageDTO(
-                msg.getSentBy().toDTO(),
-                msg.getSentTo().toDTO(),
-                msg.getSentAt(),
-                msg.getContent()
-        )).collect(Collectors.toList());
+    public List<MessageDTO> retrieveMessages(Long id, String username) throws RemoteException, CommonAppExceptions {
+
+        User user1 = userRepository.findByUsername(username)
+                .orElseThrow(() -> new CommonAppExceptions("User Not Found", HttpStatus.NOT_FOUND));
+
+        User user2 = userRepository.findById(id)
+                .orElseThrow(() -> new CommonAppExceptions("User Not Found", HttpStatus.NOT_FOUND));
+
+        List<UserMessage> messages1 = messageRepository.findChatMessageBySentByIdAndSentToId(user1.getId(), user2.getId());
+        List<UserMessage> messages2 = messageRepository.findChatMessageBySentByIdAndSentToId(user2.getId(), user1.getId());
+
+        List<MessageDTO> messageDTOs1 = messages1.stream()
+                .map(message -> new MessageDTO(message.getSentBy().toDTO(),message.getSentTo().toDTO(),message.getSentAt(),message.getContent()))
+                .toList();
+
+        List<MessageDTO> messageDTOs2 = messages2.stream()
+                .map(message -> new MessageDTO(message.getSentBy().toDTO(),message.getSentTo().toDTO(),message.getSentAt(),message.getContent()))
+                .toList();
+
+        List<MessageDTO> allMessages = new ArrayList<>(messageDTOs1);
+        allMessages.addAll(messageDTOs2);
+
+        System.out.println(allMessages);
+
+        return allMessages;
     }
+
+
 
 }

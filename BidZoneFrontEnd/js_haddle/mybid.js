@@ -32,11 +32,14 @@ function formatDateTime(dateTimeString) {
 function displayBids(bids) {
     const tableBody = document.querySelector('#bidsTable tbody');
     tableBody.innerHTML = ''; // Clear existing rows
+    const currentTime = new Date();
 
     bids.forEach(bid => {
         const row = document.createElement('tr');
+        const isClose = new Date(bid.auctionClosingTime) <= currentTime;
         row.innerHTML = `
-            <td><a href="http://localhost:63342/back/BidZoneFrontEnd/client/bid.html?id=${bid.auctionId}&isclose=false">${bid.auctionName}</a></td>
+            <td>${bid.auctionId}</td> 
+            <td><a href="bid.html?id=${bid.auctionId}&isclose=${isClose}">${bid.auctionName}</a></td>
             <td>${formatDateTime(bid.placedAt)}</td>
             <td>${bid.comment}</td>
             <td>${bid.amount}</td>
@@ -70,7 +73,7 @@ function showCar(auctionName, amount,auctionId,auctionClosingTime) {
     localStorage.setItem('amount', amount);
     localStorage.setItem('auctionId', auctionId);
 
-    window.location.href = 'http://localhost:63342/Online-Auction-Application/BidZoneFrontEnd/client/payment.html';
+    window.location.href = 'payment.html';
     // window.location.href = 'http://localhost:63342/Online-Auction-Application/BidZoneFrontEnd/client/payment1.html';
 }
 

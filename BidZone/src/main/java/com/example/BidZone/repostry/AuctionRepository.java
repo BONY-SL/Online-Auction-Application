@@ -20,6 +20,7 @@ public interface AuctionRepository extends JpaRepository<Auction,Long> {
 
     Auction findAuctionsById(Long id);
 
+
     List<Auction> findAuctionByCreatedByUsername(final String userName);
 
     List<Auction> findAuctionByCreatedByUsernameOrderByCreatedAtDesc(final String userName);

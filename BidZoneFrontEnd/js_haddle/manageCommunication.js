@@ -35,6 +35,11 @@ function fetchUsers() {
             const selectElement = document.getElementById('userSelects');
             selectElement.innerHTML = '<option selected>Select user to message</option>';
 
+            const selectElement2 = document.getElementById('userSelect');
+            selectElement2.innerHTML = '<option selected>Select User</option>';
+
+
+
             tableBody.innerHTML = '';
 
             console.log(data)
@@ -50,6 +55,11 @@ function fetchUsers() {
                 option.value = user.id;
                 option.textContent = user.id;
                 selectElement.appendChild(option);
+
+                const option2 = document.createElement('option');
+                option2.value = user.id;
+                option2.textContent = user.id;
+                selectElement2.appendChild(option2);
             });
         })
         .catch(error => {
@@ -95,6 +105,7 @@ async function sendMessage() {
     } catch (error) {
         console.error('Error sending message:', error);
     }
+    document.getElementById('clease').value="";
 }
 async function displayReceivedMessages() {
     const receivedMessagesDiv = document.querySelector('.received-messages');
@@ -137,44 +148,83 @@ async function displayReceivedMessages() {
 function sendReply() {
     const reply = document.querySelector('#receiveMessage textarea').value;
     console.log(`Reply sent: ${reply}`);
-    // Here you would typically handle sending the reply to the appropriate recipient
-    alert('Reply sent!'); // Placeholder feedback
-    // Optionally, you can clear the textarea after sending the reply
+    alert('Reply sent!');
+
     document.querySelector('#receiveMessage textarea').value = '';
 }
-// Simulated message history data (replace this with your actual data)
-const messageHistoryData = {
-    user1: [
-        { timestamp: '2024-05-08 10:00', message: 'Hello!' },
-        { timestamp: '2024-05-08 10:05', message: 'How are you?' },
-        // Add more messages for user1 as needed
-    ],
-    user2: [
-        { timestamp: '2024-05-08 11:00', message: 'Hi there!' },
-        { timestamp: '2024-05-08 11:05', message: 'I\'m doing fine, thanks!' },
-        // Add more messages for user2 as needed
-    ],
-    // Add message history for more users as needed
-};
 
-function showMessageHistory() {
+async function showMessageHistory() {
+
+    const currentUsername = localStorage.getItem("username");
+    console.log(currentUsername)
     const userSelect = document.getElementById('userSelect');
-    const selectedUser = userSelect.value;
-    const messageHistoryDiv = document.getElementById('messageHistory');
-
-    messageHistoryDiv.innerHTML = '';
-
-    if (selectedUser && messageHistoryData[selectedUser]) {
-        const messages = messageHistoryData[selectedUser];
-        messages.forEach(message => {
-            const messageDiv = document.createElement('div');
-            messageDiv.classList.add('message');
-            messageDiv.textContent = `${message.timestamp}: ${message.message}`;
-            messageHistoryDiv.appendChild(messageDiv);
-        });
-    } else {
-        const messageDiv = document.createElement('div');
-        messageDiv.textContent = 'No message history available for this user.';
-        messageHistoryDiv.appendChild(messageDiv);
+    const selectedValue = userSelect.options[userSelect.selectedIndex].value;
+    console.log(selectedValue);
+    if (selectedValue === "Select User") {
+        alert("Please Select  User")
+        return
     }
+    if (!selectedValue || !currentUsername) {
+        alert("Please Select  User")
+        return
+    }
+
+    try {
+        const response = await fetch(`http://localhost:8080/auctionappBidZone/getUsersMessageHistory?userId=${selectedValue}&username=${currentUsername}`);
+        if (!response.ok) {
+            const errorDetails = await response.text();
+            console.error('Error fetching messages:', errorDetails);
+            return;
+        }
+
+
+        const data = await response.json();
+
+
+        if (data && data.length > 0) {
+
+
+            const table = document.createElement('table');
+            table.className = 'table';
+            const thead = document.createElement('thead');
+            const tbody = document.createElement('tbody');
+
+            const headers = ['Message', 'Sent At', 'Sent By', 'Sent To'];
+            const headerRow = document.createElement('tr');
+            headers.forEach(headerText => {
+                const header = document.createElement('th');
+                header.textContent = headerText;
+                headerRow.appendChild(header);
+            });
+            thead.appendChild(headerRow);
+
+            data.forEach(message => {
+                const row = document.createElement('tr');
+                const contentCell = document.createElement('td');
+                const sentAtCell = document.createElement('td');
+                const sendby = document.createElement('td');
+                const sendto = document.createElement('td');
+                contentCell.textContent = message.content;
+                sentAtCell.textContent = new Date(message.sentAt).toLocaleString();
+                sendby.textContent=message.sentBy.username;
+                sendto.textContent=message.sentTo.username;
+                row.appendChild(contentCell);
+                row.appendChild(sentAtCell);
+                row.appendChild(sendby);
+                row.appendChild(sendto);
+                tbody.appendChild(row);
+            });
+            table.appendChild(thead);
+            table.appendChild(tbody);
+            const messageHistory = document.getElementById('messageHistory');
+            messageHistory.innerHTML = '';
+            messageHistory.appendChild(table);
+        } else {
+            console.log('No messages found.');
+        }
+    } catch (error) {
+        console.error('Error fetching messages:', error);
+    }
+
+
 }

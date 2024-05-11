@@ -114,5 +114,14 @@ public class AuctionService {
         return auctionMapper.convertToDto(updatedAuction);
     }
 
+    public void deleteAuction(Long auctionId) throws CommonAppExceptions {
+
+        Auction auction=auctionRepository.findById(auctionId)
+                .orElseThrow(()->new CommonAppExceptions("Invalid Auction ID",HttpStatus.NOT_FOUND));
+
+        auction.setAction_name("NULL");
+        auctionRepository.save(auction);
+    }
+
 }
 

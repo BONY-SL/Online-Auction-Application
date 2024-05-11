@@ -77,8 +77,8 @@
                     <button class="btn btn-primary mt-2" style="margin: 5px 5px 20px 5px" onclick="displayReceivedMessages()">View Received Message</button>
                     <div class="received-messages">
                     </div>
-                    <textarea class="form-control" rows="3" placeholder="Type your message here..."></textarea>
-                    <button class="btn btn-success  mt-2" onclick="sendMessage()">Reply</button>
+                    <textarea class="form-control" rows="3" placeholder="Type your message here..." id="clease"></textarea>
+                    <button class="btn btn-success  mt-2" onclick="sendMessage()">Send</button>
                 </div>
             </div>
             <div id="viewHistory" class="content-section">
@@ -86,16 +86,12 @@
                     <label for="userSelect" style="font-weight: bold; display: block; margin-bottom: 5px; color: #495057;">Select User:</label>
 
                     <select id="userSelect" class="form-select" onchange="showMessageHistory()">
-                        <option value="" selected>Select user</option>
-                        <!-- Populate this dropdown dynamically with user data -->
-                        <option value="user1">User 1</option>
-                        <option value="user2">User 2</option>
-                        <!-- Add more users as needed -->
+                        <option selected>Select user</option>
                     </select>
                 </div>
-                <div id="messageHistory" class="mt-3">
-                    <!-- Message history will be dynamically added here -->
-                </div>
+                    <div id="messageHistory" class="mt-3">
+
+                    </div>
             </div>
 
             <div id="receiveMessage" class="content-section">
