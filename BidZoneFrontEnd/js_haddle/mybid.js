@@ -63,16 +63,34 @@ function showCar(auctionName, amount,auctionId,auctionClosingTime) {
     console.log('Closing Date Timestamp:', closingDateTimestamp);
 
     if (currentDateTimestamp < closingDateTimestamp) {
-        alert("AUCTION IS NOT CLOSED.PLEACE WAIT UNTILE AUCTION IS CLOSED TO PAYMENT");
-    }
-
-    localStorage.setItem('auctionName', auctionName);
+        //alert("AUCTION IS NOT CLOSED.PLEACE WAIT UNTILE AUCTION IS CLOSED TO PAYMENT");
+        showAlert('AUCTION IS NOT CLOSED.PLEACE WAIT UNTILE AUCTION IS CLOSED TO PAYMENT.', 'danger');
+    } else{
+        localStorage.setItem('auctionName', auctionName);
     localStorage.setItem('amount', amount);
     localStorage.setItem('auctionId', auctionId);
 
     window.location.href = 'http://localhost:63342/Online-Auction-Application/BidZoneFrontEnd/client/payment.html';
     // window.location.href = 'http://localhost:63342/Online-Auction-Application/BidZoneFrontEnd/client/payment1.html';
+}
 
 }
 
 document.addEventListener('DOMContentLoaded', fetchMyBids);
+
+function showAlert(message, type) {
+    var alertElement = document.createElement('div');
+    alertElement.classList.add('alert', 'alert-' + type);
+    alertElement.setAttribute('role', 'alert');
+    alertElement.innerText = message;
+
+    var container = document.querySelector('.container'); // Assuming there's a container element in your HTML
+    container.insertBefore(alertElement, container.firstChild);
+
+    setTimeout(function () {
+        alertElement.remove();
+    }, 5000);
+}
+
+
+
