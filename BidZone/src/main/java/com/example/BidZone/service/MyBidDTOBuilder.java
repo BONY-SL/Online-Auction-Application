@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class MyBidDTOBuilder {
-    private MyBidDTO myBidDTO;
+    private final MyBidDTO myBidDTO;
 
     public MyBidDTOBuilder() {
         myBidDTO = new MyBidDTO();

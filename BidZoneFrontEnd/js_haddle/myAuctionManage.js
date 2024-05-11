@@ -18,11 +18,16 @@ async function fetchMyAuctions() {
     }
 }
 
+document.addEventListener('DOMContentLoaded', fetchMyAuctions);
+
 function displayMyAuctions(auctions) {
 
     const auctionList = document.getElementById('auction-list');
     auctionList.innerHTML = '';
     auctions.forEach(auction => {
+        if(auction.action_name==="NULL"){
+            return
+        }
         const imageUrl = auction.image.startsWith('/')
             ? `http://localhost:8080${auction.image}`
             : auction.image;
@@ -64,7 +69,7 @@ function displayMyAuctions(auctions) {
     });
 
 }
-document.addEventListener('DOMContentLoaded', fetchMyAuctions);
+
 
 async function filterMyAuctions(){
     const selectedOrder = document.getElementById('category-Oder').value;
@@ -145,10 +150,28 @@ function handleUpdateDetails(auctionId) {
 }
 
 
-function handleDeleteListing(auctionId) {
-    alert(`Deleting auction listing: ${auctionId}`);
+async function handleDeleteListing(auctionId) {
 
+    if (confirm(`Are you sure you want to delete auction listing ${auctionId}?`)) {
+
+        fetch(`http://localhost:8080/auctionappBidZone/deleteAuction?auctionId=${auctionId}`, {
+            method: 'PATCH',
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert(`Auction listing ${auctionId} deleted successfully.`);
+                    fetchMyAuctions();
+                } else {
+                    alert(`Failed to delete auction listing ${auctionId}.`);
+                }
+            })
+            .catch(error => {
+                alert('An error occurred while deleting the auction listing.');
+                console.error('Error:', error);
+            });
+    }
 }
+
 async function updateAuction() {
     const auctionId = parseInt(document.getElementById('auctionid').textContent);
     const auctionName = document.getElementById('auctionName').value;

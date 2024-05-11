@@ -14,6 +14,9 @@ function displayAuctions(auctions) {
     const auctionList = document.getElementById('auction-list');
     auctionList.innerHTML = '';
     auctions.forEach(auction => {
+        if(auction.action_name==="NULL"){
+            return
+        }
         const imageUrl = auction.image.startsWith('/')
             ? `http://localhost:8080${auction.image}`
             : auction.image;

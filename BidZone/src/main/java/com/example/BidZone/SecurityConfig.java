@@ -35,8 +35,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/auctionappBidZone/registerUser", "/auctionappBidZone/userlogin","/auctionappBidZone/addcategories","/auctionappBidZone/createNewAuctions","/auctionappBidZone/bidForAuctionItem","/auctionappBidZone/validateUserEmailForResetPassword","/auctionappBidZone/sendmailToUser","/auctionappBidZone/verifyGetOtp","/auctionappBidZone/messages/send","/auctionappBidZone/savepayment").permitAll()
                         .requestMatchers(HttpMethod.GET, "/auctionappBidZone/profile", "/auctionappBidZone/profile/{profileId}","/auctionappBidZone/categories","/auctionappBidZone/getAllauctions","/auctionappBidZone/getAuctiondetails","/auctionappBidZone/getUserDetails"
                         ,"/auctionappBidZone/getAuctionsByCategory","/auctionappBidZone/getTheAllBidsUnderTheAuction","/auctionappBidZone/getmyAllAuctions","/auctionappBidZone/getMyAllLisingSpesificOrder","/auctionappBidZone/getAllUsers","/auctionappBidZone/getNotifyMessageAddNewAuction"
-                        ,"/auctionappBidZone/messages/response","/auctionappBidZone/myBids","/auctionappBidZone/getpaymentdetails/{username}").permitAll()
-                        .requestMatchers(HttpMethod.PATCH,"/auctionappBidZone/profile").permitAll()
+                        ,"/auctionappBidZone/messages/response","/auctionappBidZone/myBids","/auctionappBidZone/getpaymentdetails/{username}","/auctionappBidZone/getUsersMessageHistory").permitAll()
+                        .requestMatchers(HttpMethod.PATCH,"/auctionappBidZone/profile","/auctionappBidZone/deleteAuction").permitAll()
                         .requestMatchers(HttpMethod.PUT,"/auctionappBidZone/updateAuction","/auctionappBidZone/resetPassword").permitAll()
                         .requestMatchers("/uploads/**").permitAll()
                         .anyRequest().authenticated()

@@ -1,4 +1,3 @@
-
 async function createNewAuction() {
 
     const action_name = document.getElementById('name').value.trim();
@@ -47,10 +46,8 @@ async function createNewAuction() {
         if (response.ok) {
             const result = await response.json();
             alert(`Auction created successfully with ID: ${result.id}`);
-            const response2 = await fetch("http://localhost:8080/auctionappBidZone/getNotifyMessageAddNewAuction");
-            const data = await response2.json();
-            console.log(data.message);
             this.clearFormData();
+
         } else {
             const errorText = await response.text();
             alert(`Failed to create auction: ${errorText}`);
