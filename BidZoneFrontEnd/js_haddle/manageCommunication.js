@@ -155,12 +155,15 @@ function sendReply() {
 
 async function showMessageHistory() {
 
+    const messageHistory = document.getElementById('messageHistory');
+    messageHistory.innerHTML = '';
     const currentUsername = localStorage.getItem("username");
     console.log(currentUsername)
     const userSelect = document.getElementById('userSelect');
     const selectedValue = userSelect.options[userSelect.selectedIndex].value;
     console.log(selectedValue);
     if (selectedValue === "Select User") {
+        messageHistory.innerHTML = '';
         alert("Please Select  User")
         return
     }
@@ -216,11 +219,10 @@ async function showMessageHistory() {
             });
             table.appendChild(thead);
             table.appendChild(tbody);
-            const messageHistory = document.getElementById('messageHistory');
             messageHistory.innerHTML = '';
             messageHistory.appendChild(table);
         } else {
-            console.log('No messages found.');
+            alert('No messages found.');
         }
     } catch (error) {
         console.error('Error fetching messages:', error);

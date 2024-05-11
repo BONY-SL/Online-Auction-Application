@@ -1,5 +1,4 @@
 
-
 async function fetchMyBids() {
     const username = localStorage.getItem("username");
     try {
@@ -37,6 +36,11 @@ function displayBids(bids) {
     bids.forEach(bid => {
         const row = document.createElement('tr');
         const isClose = new Date(bid.auctionClosingTime) <= currentTime;
+
+        if(bid.auctionName==="NULL"){
+            return
+        }
+
         row.innerHTML = `
             <td>${bid.auctionId}</td> 
             <td><a href="bid.html?id=${bid.auctionId}&isclose=${isClose}">${bid.auctionName}</a></td>
