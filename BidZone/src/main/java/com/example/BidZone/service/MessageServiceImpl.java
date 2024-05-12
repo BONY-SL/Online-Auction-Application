@@ -51,7 +51,7 @@ public class MessageServiceImpl extends UnicastRemoteObject implements ChatRepoS
 
             messageRepository.save(message);
             realTimeMessageManage.serializeMesageDTOInventory(messageDTO);
-            MessageDTO messageDTO1=realTimeMessageManage.deserializeMesageDTOInventory("message.ser");
+            //MessageDTO messageDTO1=realTimeMessageManage.deserializeMesageDTOInventory("message.ser");
             System.out.println("Sent By: "+message.getSentBy().getId());
             System.out.println("Sent By: "+message.getSentBy().getUsername());
             System.out.println("Sent To: "+message.getSentTo().getId());
