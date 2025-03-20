@@ -32,6 +32,8 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/", "**", "/styles/**", "/js_haddle/**").permitAll()
+
                         .requestMatchers(HttpMethod.POST, "/auctionappBidZone/registerUser", "/auctionappBidZone/userlogin","/auctionappBidZone/addcategories","/auctionappBidZone/createNewAuctions","/auctionappBidZone/bidForAuctionItem","/auctionappBidZone/validateUserEmailForResetPassword","/auctionappBidZone/sendmailToUser","/auctionappBidZone/verifyGetOtp","/auctionappBidZone/messages/send","/auctionappBidZone/savepayment").permitAll()
                         .requestMatchers(HttpMethod.GET, "/auctionappBidZone/profile", "/auctionappBidZone/profile/{profileId}","/auctionappBidZone/categories","/auctionappBidZone/getAllauctions","/auctionappBidZone/getAuctiondetails","/auctionappBidZone/getUserDetails"
                         ,"/auctionappBidZone/getAuctionsByCategory","/auctionappBidZone/getTheAllBidsUnderTheAuction","/auctionappBidZone/getmyAllAuctions","/auctionappBidZone/getMyAllLisingSpesificOrder","/auctionappBidZone/getAllUsers","/auctionappBidZone/getNotifyMessageAddNewAuction"
