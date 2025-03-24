@@ -1,4 +1,50 @@
-BidZone - Online Auction Platform
+# BidZone - Online Auction Platform
+
+BidZone is an online auction platform developed using Java. This platform offers a secure and efficient environment for users to engage in buying and selling items through online auctions. By leveraging advanced technologies and robust system architecture, BidZone aims to facilitate a dynamic marketplace where transactions are conducted seamlessly and securely.
+
+## Features and Functionalities
+
+BidZone provides a comprehensive suite of features designed for a seamless auction experience:
+
+- **Item Listing**: Users can list items for auction by providing detailed descriptions, setting initial bids, and uploading images.
+- **Bidding**: A live bidding environment that updates bid statuses in real-time, ensuring constant user engagement and excitement.
+- **Auction Management**: Administrators can manage auction timings, categorize items, and assign user roles to ensure platform efficiency.
+- **User Authentication**: A secure login and registration system to authenticate all user interactions and safeguard user data.
+- **Transaction Processing**: Efficient handling of bid transactions and auction outcomes with a focus on accuracy and reliability.
+
+## Software Requirements
+
+- **Operating System**: 
+  - Windows 10, Windows 11, MacOS Mojave, or any modern Linux distribution.
+  
+- **Java Runtime Environment (JRE)**: 
+  - Java 17 or newer.
+
+- **Web Browser**: 
+  - Latest version of Chrome, Firefox, Safari, or Edge.
+
+- **Database Server**: 
+  - MySQL Server 8.0 or higher.
+
+- **Application Server**: 
+  - Apache Tomcat 9.0 or similar.
+
+## Frameworks and Technologies
+
+BidZone is built with the following frameworks and technologies to ensure scalability and functionality:
+
+- **Hibernate ORM**: For object-relational mapping, simplifying database interactions and ensuring data integrity.
+- **Spring Framework**: Provides infrastructure support for developing Java applications, managing security, transactions, and configurations.
+- **JavaScript Bootstrap**: For creating a dynamic, responsive user interface on the client-side.
+
+## Project Setup
+
+### Clone the Repository
+
+To get started with the project, clone the repository using the following command:
+
+```bash git clone https://github.com/BONY-SL/Online-Auction-Application
+
 
 ![75f94855dfa81c611fbc237d6fe6d8042b685d00](https://github.com/BONY-SL/Online-Auction-Application/assets/143308037/ca4a925d-54b9-44b6-afd6-cf0ca5888144)
 ![7fa3dc98f9d4fc2eb7fe74ef1f36ef3e88a090d7](https://github.com/BONY-SL/Online-Auction-Application/assets/143308037/a8930232-ee88-4b7e-9579-a7300890f4c4)
