@@ -43,7 +43,9 @@ BidZone is built with the following frameworks and technologies to ensure scalab
 
 To get started with the project, clone the repository using the following command:
 
-```bash git clone https://github.com/BONY-SL/Online-Auction-Application
+```bash git clone
+
+https://github.com/BONY-SL/Online-Auction-Application
 
 
 ![75f94855dfa81c611fbc237d6fe6d8042b685d00](https://github.com/BONY-SL/Online-Auction-Application/assets/143308037/ca4a925d-54b9-44b6-afd6-cf0ca5888144)
