@@ -1,4 +1,4 @@
-Create Online Auction Application Using JAVA Consepts ORM,Threads,Design Patterns withing Spring boot
+BidZone - Online Auction Platform
 
 ![75f94855dfa81c611fbc237d6fe6d8042b685d00](https://github.com/BONY-SL/Online-Auction-Application/assets/143308037/ca4a925d-54b9-44b6-afd6-cf0ca5888144)
 ![7fa3dc98f9d4fc2eb7fe74ef1f36ef3e88a090d7](https://github.com/BONY-SL/Online-Auction-Application/assets/143308037/a8930232-ee88-4b7e-9579-a7300890f4c4)
