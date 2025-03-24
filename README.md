@@ -39,13 +39,34 @@ BidZone is built with the following frameworks and technologies to ensure scalab
 
 ## Project Setup
 
-### Clone the Repository
+### 1. Clone the Repository
 
 To get started with the project, clone the repository using the following command:
 
    ```bash
    git clone https://github.com/BONY-SL/Online-Auction-Application.git
 ```
+### 2. Open the Project in IntelliJ IDEA
+
+### 3. Configure the Database Connection
+
+   ```bash
+     spring.datasource.url=jdbc:mysql://localhost:3306/db_name
+     spring.datasource.username=your_db_username
+     spring.datasource.password=your_db_password
+     spring.jpa.hibernate.ddl-auto=update
+     spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+```
+
+### 4. Build the Project with Maven
+
+   ```bash
+      mvn clean install
+```
+
+### 5. Run the Project
+
+
 
 ![75f94855dfa81c611fbc237d6fe6d8042b685d00](https://github.com/BONY-SL/Online-Auction-Application/assets/143308037/ca4a925d-54b9-44b6-afd6-cf0ca5888144)
 ![7fa3dc98f9d4fc2eb7fe74ef1f36ef3e88a090d7](https://github.com/BONY-SL/Online-Auction-Application/assets/143308037/a8930232-ee88-4b7e-9579-a7300890f4c4)
@@ -54,11 +75,11 @@ To get started with the project, clone the repository using the following comman
 ![e2b6b6c53be2dd4c1be106447c29ce7ddbfb7202](https://github.com/BONY-SL/Online-Auction-Application/assets/143308037/744d81cb-d007-4d32-bd92-aa1ba0e56a5e)
 ![87d2103d13f9f0f64b563bb2dc6f8d7e8716468b](https://github.com/BONY-SL/Online-Auction-Application/assets/143308037/b8e019a7-ccd6-473c-9721-93ccfe4f69da)
 
-Code Examples User Profile Manage
+## Code Examples User Profile Manage
 
 
 
-
+```bash
     @Autowired
     private ProfileService profileService;
 
@@ -154,3 +175,4 @@ Code Examples User Profile Manage
 
         return "/uploads/images/" + userName + "/" + fileName;
     }
+```
